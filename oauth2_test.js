@@ -45,6 +45,6 @@ if (get('code') != undefined) {
         clientSecret: code,
         refreshToken: ''
     });
-
-    r.getHot().map(post => post.title).then(console.log);
+    r.getHot();
+    //r.getHot().map(post => post.title).then(console.log);
 }

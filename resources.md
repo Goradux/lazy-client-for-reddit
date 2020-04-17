@@ -6,6 +6,9 @@ https://github.com/reddit-archive/reddit/wiki/OAuth2
 https://github.com/reddit-archive/reddit/wiki/API
 https://stackoverflow.com/questions/6084360/using-node-js-as-a-simple-web-server
 https://stackoverflow.com/questions/831030/how-to-get-get-request-parameters-in-javascript
+https://not-an-aardvark.github.io/snoowrap/snoowrap.html#snoowrap
+https://stackoverflow.com/questions/40017992/node-connect-add-cors-header
+
 
 ---
 
