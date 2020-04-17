@@ -10,6 +10,11 @@ var CLIENT_SECRET = 'None'
 var REDIRECT_URI = "http://localhost:8080/index.html"
 var REDIRECT_URI2 = "http%3A%2F%2Flocalhost%3A8080"
 
+function get(name){
+    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+       return decodeURIComponent(name[1]);
+}
+
 function jsonToURI(json){ return encodeURIComponent(JSON.stringify(json)); }
 
 var button = document.getElementById('authorize_button')
@@ -24,7 +29,7 @@ button.onclick = function(){
         "duration": "temporary",
         "scope": "identity"
     }
-    var encoded = 'https://ssl.reddit.com/api/v1/authorize?'.concat("client_id=", CLIENT_ID, "&response_type=", "code", "&state=", state, "&redirect_uri=", REDIRECT_URI2, "&duration=temporary&scope=identity");
+    var encoded = 'https://ssl.reddit.com/api/v1/authorize?'.concat("client_id=", CLIENT_ID, "&response_type=", "code", "&state=", state, "&redirect_uri=", REDIRECT_URI2, "&duration=temporary&scope=identity,edit,mysubreddits,read,submit,vote,subscribe");
     console.log(encoded);
     console.log("https://ssl.reddit.com/api/v1/authorize?client_id=sdFYMdVeMGtguQ&response_type=code&state=9fd9a157-7338-44e8-a8eb-579c0a6fcd57&redirect_uri=http%3A%2F%2Flocalhost%3A65010%2Freddit_callback&duration=temporary&scope=identity");
     //console.log('https://ssl.reddit.com/api/v1/authorize?'.concat(jsonToURI(params)))
@@ -32,12 +37,14 @@ button.onclick = function(){
     location.href = encoded;
 };
 
+if (get('code') != undefined) {
+    var code = get('code');
+    const r = new snoowrap({
+        userAgent: 'my agent Goradux',
+        clientId: CLIENT_ID,
+        clientSecret: code,
+        refreshToken: ''
+    });
 
-// const r = new snoowrap({
-//     userAgent: 'my agent Goradux',
-//     clientId: "sdFYMdVeMGtguQ",
-//     clientSecret: '',
-//     refreshToken: 'None'
-// });
-
-//   r.getHot().map(post => post.title).then(console.log);
+    r.getHot().map(post => post.title).then(console.log);
+}
