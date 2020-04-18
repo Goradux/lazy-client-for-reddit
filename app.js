@@ -15,26 +15,93 @@ const r = new snoowrap({
   });
 
 
-console.log('checkpoint');
-
-//r.getSubmission('4j8p6d').expandReplies({limit: 5, depth: 5}).then(console.log)
-
-//r.getSubreddit('funny').getHot().then(console.log)
 var x = 1;
-r.getSubreddit('funny').getRandomSubmission().then((out) => {
-  //console.log(out);
+r.getSubreddit('jokes').getRandomSubmission().then((out) => {
   x = out;
 })
 .then(
   ready => {
-    console.log(x);
-    console.log(x['body']);
-    console.log(x['gilded']);
-    console.log(x['created_utc']);
-    console.log(x.author);
-    
+    // console.log()
+    // console.log(x);
+    // console.log()
+
+    // for (var property in x) {
+    //   if (x.hasOwnProperty(property)) {
+    //     // Do things here
+    //     if (property == 'body') {
+    //       console.log('!!!!!!!!!');
+    //     }
+    //     console.log(`${property}: ${x[property]}`);
+    //     if (property == 'body') {
+    //       console.log('!!!!!!!!!');
+    //     }
+    //   }
+    // }
+
   } 
 )
+
+// get a text joke
+// r.getSubreddit('jokes').getHot({limit: 1})
+// .then(out => {
+//   // console.log(out);
+//   console.log();
+//   console.log(out[1]['title']);
+//   console.log(out[1]['selftext']);
+//   console.log(out[1]['ups']);
+//   // console.log(out[1]['comments']);
+// })
+
+
+// get a picture
+// r.getSubreddit('pics').getHot({limit: 10})
+// .then(out => {
+//   // console.log(out[5]);
+//   console.log(out[1]['title']);
+//   console.log(out[1]['selftext']);
+//   console.log(out[5]['url']);
+  
+// })
+
+
+// get an external content link
+// r.getSubreddit('gifs').getHot({limit: 10})
+// .then(out => {
+//   console.log(out[5]);
+//   console.log();
+//   console.log(out[1]['title']);
+//   // console.log(out[1]['selftext']);
+//   console.log(out[5]['url']);
+  
+// })
+
+
+r.getSubreddit('LivestreamFail').getRising({limit: 5})
+.then(out => {
+  console.log(out[4]);
+  console.log();
+  console.log(out[4]['title']);
+  // console.log(out[1]['selftext']);
+  console.log(out[4]['url']);
+})
+
+
+// crosspost case mb?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
