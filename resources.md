@@ -8,6 +8,10 @@ https://stackoverflow.com/questions/6084360/using-node-js-as-a-simple-web-server
 https://stackoverflow.com/questions/831030/how-to-get-get-request-parameters-in-javascript
 https://not-an-aardvark.github.io/snoowrap/snoowrap.html#snoowrap
 https://stackoverflow.com/questions/40017992/node-connect-add-cors-header
+https://www.reddit.com/r/changelog/comments/1r0u3v/reddit_change_third_party_websites_can_now_make/
+
+
+#### https://stackoverflow.com/questions/24682305/reddit-api-from-jquery-ajax-with-cors-no-access-control-allow-origin-header-i
 
 
 ---
