@@ -1,0 +1,14 @@
+Layout:
+Sort by new/hot/top
+Timer 10 seconds
+Main content window
+Skip button
+Top 5 comments
+Upvote/Downvote
+
+main loop:
+fetch hot posts
+make a frame
+display that posts in the frame
+wait 10 seconds
+
