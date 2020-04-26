@@ -76,17 +76,37 @@ r.getSubreddit('jokes').getRandomSubmission().then((out) => {
 // })
 
 
-r.getSubreddit('LivestreamFail').getRising({limit: 5})
-.then(out => {
-  console.log(out[4]);
-  console.log();
-  console.log(out[4]['title']);
-  // console.log(out[1]['selftext']);
-  console.log(out[4]['url']);
-})
+// r.getSubreddit('LivestreamFail').getRising({limit: 5})
+// .then(out => {
+//   console.log(out[4]);
+//   console.log();
+//   console.log(out[4]['title']);
+//   // console.log(out[1]['selftext']);
+//   console.log(out[4]['url']);
+// })
 
 
-// crosspost case mb?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// TODO
+// get a list of my subreddits
+
+
+
+
+
 
 
 
