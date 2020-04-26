@@ -20,8 +20,8 @@ class App extends Component {
     },
     window_width: 0,
     window_height: 0,
-    subs: [],
-    posts: [],
+    submissions: [],
+    current_submission: null,
     _first: true,
     local_post_id: 0,
     reddit: null,
@@ -45,19 +45,32 @@ class App extends Component {
       //     this.state.subs.push(element.display_name);
       //   });
       // });
-      r.getHot({limit: 100})
+      r.getHot({limit: 4, after: 0, count: 0})
       .then(output => {
         output.forEach(element => {
-          this.state.posts.push(element);
+          this.state.submissions.push(element);
         });
-        console.log(this.state.posts);
+        console.log(this.state.submissions);
       });
     }
 
     this.interval = setInterval(() => {
       this.setState({local_post_id: this.state.local_post_id + 1});
-      // 
-    }, 1000);
+      this.setState({current_submission: this.state.submissions.shift()});                  // mutating this.state.submissions directly! BAD
+      // console.log(this.state.current_submission);
+      if (this.state.current_submission === undefined) {
+        console.log('another');
+        this.state.reddit.getHot({limit: 4, after: 4, count: 4})
+        .then(output => {
+          output.forEach(element => {
+            this.state.submissions.push(element);
+          });
+        });
+      }
+      if (this.state.current_submission !== undefined) {
+        console.log(this.state.current_submission.url);
+      }
+      }, 1000);
   }
 
   componentWillUnmount() {
@@ -81,8 +94,8 @@ class App extends Component {
             Learn React
           </a>
         </header> */}
-        <ContentFrame subs={this.state.subs} local_id={this.state.local_post_id}/>
-        <RightPanel local_id={this.state.local_post_id}/>
+        <ContentFrame local_id={this.state.local_post_id} submission={this.state.current_sumbission}/>
+        <RightPanel local_id={this.state.local_post_id} submission={this.state.current_submission}/>
       </div>
     );
   }

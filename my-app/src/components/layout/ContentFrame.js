@@ -7,9 +7,11 @@ export class ContentFrame extends Component {
     }
 
     render() {
+        // const {url} = this.props.submission;
+
         return (
             <div>
-                Content Frame {this.props.local_id}
+                Content Frame {this.props.local_id} {this.props.submission}
             </div>
         )
     }
