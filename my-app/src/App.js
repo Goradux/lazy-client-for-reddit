@@ -21,10 +21,25 @@ class App extends Component {
     window_width: 0,
     window_height: 0,
     submissions: [],
+    after: null,
     current_submission: null,
     _first: true,
     local_post_id: 0,
     reddit: null,
+  }
+
+  change_current_submission = (sub) => {
+    this.setState({current_submission: {
+      author: sub.author.name,
+      // comments is a Listing
+      gilded: sub.gilded,
+      id: sub.id,
+      is_video: sub.is_video,
+      is_self: sub.is_self,
+      is_reddit_media_domain: sub.is_reddit_media_domain,
+      //media:
+      no_follow: sub.no_follow,
+    }});
   }
 
   updateDimensions = () => {
@@ -45,32 +60,33 @@ class App extends Component {
       //     this.state.subs.push(element.display_name);
       //   });
       // });
-      r.getHot({limit: 4, after: 0, count: 0})
+      r.getHot({limit: 2})
       .then(output => {
+        // console.log(output);
+        this.setState({after: output._query.after});
         output.forEach(element => {
           this.state.submissions.push(element);
         });
-        console.log(this.state.submissions);
+        console.log(this.state.submissions[0]);
       });
     }
 
     this.interval = setInterval(() => {
       this.setState({local_post_id: this.state.local_post_id + 1});
-      this.setState({current_submission: this.state.submissions.shift()});                  // mutating this.state.submissions directly! BAD
+      this.setState({current_submission: this.state.submissions.shift()});      // mutating this.state.submissions directly! BAD
       // console.log(this.state.current_submission);
       if (this.state.current_submission === undefined) {
-        console.log('another');
-        this.state.reddit.getHot({limit: 4, after: 4, count: 4})
+        this.state.reddit.getHot({limit: 100, after: this.state.after})
         .then(output => {
+          this.setState({after: output._query.after});
           output.forEach(element => {
             this.state.submissions.push(element);
           });
         });
+      } else {                        // ordering here is weird
+        // console.log(this.state.current_submission.url);
       }
-      if (this.state.current_submission !== undefined) {
-        console.log(this.state.current_submission.url);
-      }
-      }, 1000);
+      }, 5000);
   }
 
   componentWillUnmount() {
@@ -94,8 +110,10 @@ class App extends Component {
             Learn React
           </a>
         </header> */}
-        <ContentFrame local_id={this.state.local_post_id} submission={this.state.current_sumbission}/>
-        <RightPanel local_id={this.state.local_post_id} submission={this.state.current_submission}/>
+        {/* <ContentFrame local_id={this.state.local_post_id} submission={this.state.current_submission}/> */}
+        {/* https://stackoverflow.com/questions/49081549/passing-object-as-props-to-jsx */}
+        <ContentFrame local_id={this.state.local_post_id}/>
+        <RightPanel local_id={this.state.local_post_id}/>
       </div>
     );
   }
