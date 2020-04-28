@@ -188,7 +188,8 @@ class App extends Component {
     this.interval = setInterval(() => {
       this.setState({local_post_id: this.state.local_post_id + 1});
       // this.setState({current_submission: this.state.submissions.shift()});      // mutating this.state.submissions directly! BAD
-      this.change_current_submission(this.state.submissions.shift());
+      this.change_current_submission(this.state.submissions[0]);
+      this.setState({submissions: this.state.submissions.slice(1)});
       // console.log(this.state.current_submission);
       if (this.state.current_submission === undefined) {
         this.state.reddit.getHot({limit: 100, after: this.state.after})
@@ -198,10 +199,10 @@ class App extends Component {
             this.state.submissions.push(element);
           });
         });
-      } else {                        // ordering here is weird
+      } else {
         console.log(this.state.current_submission.url);
       }
-      }, 500);
+      }, 1000); // HOWEVER, THE BUG IS GONE IF THE TIMER IS BIG ENOUGH TO COVER THE REQUEST
   }
 
   componentWillUnmount() {
@@ -209,6 +210,13 @@ class App extends Component {
   }
 
   render() {
+
+    // this happens 4 times ! BAD
+    
+
+    // still doest want to pass
+    // const submission = this.state.current_submission;
+
     return (
       <div className="App">
         {/* <header className="App-header">
