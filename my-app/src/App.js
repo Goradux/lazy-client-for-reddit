@@ -8,6 +8,10 @@ import RightPanel from './components/layout/RightPanel';
 class App extends Component {
 
   display_options = ['hot', 'top', 'new', 'rising'];
+  after = 0;
+  submissions = [];
+  local_post_id = 0;
+  fetch_more = false;
 
   // there is a problem here.
   // this shit should automatically ask for a login, without hardcoded stuff
@@ -30,6 +34,7 @@ class App extends Component {
 
   change_current_submission = (sub) => {
     if (sub !== undefined) {
+      this.fetch_more = false;
       this.setState({current_submission: {
         // author: sub.author.name,
         // // comments is a Listing
@@ -152,8 +157,20 @@ class App extends Component {
         wls: sub.wls
       }});
     } else {
-      this.setState({current_submission: undefined});
+      // this.setState({current_submission: undefined});
+      this.fetch_more = true;
     }
+  }
+  log_interesting = () => {
+    console.log('---------------');
+    console.log(this.state.current_submission.subreddit);
+    console.log(this.state.current_submission.post_hint);
+    console.log(this.state.current_submission.title);
+    if (this.state.current_submission.selftext !== '')
+      console.log(this.state.current_submission.selftext);
+    console.log(this.state.current_submission.url);
+    console.log(this.state.current_submission.author);
+    console.log(this.state.current_submission.ups);
   }
 
   updateDimensions = () => {
@@ -165,9 +182,11 @@ class App extends Component {
 
   componentDidMount() {
     if (this.state._first) {
-      this.setState({_first: false});
       const r = new snoowrap(this.state.reddit_credentials);
-      this.setState({reddit: r});
+      this.setState({
+        reddit: r,
+        _first: false,
+      });
       // r.getSubscriptions({limit: 10})
       // .then((output) => {
       //   output.forEach(element => {
@@ -175,32 +194,30 @@ class App extends Component {
       //   });
       // });
       r.getHot({limit: 2})
+      // r.getSubreddit('jokes').getHot({limit: 100})
       .then(output => {
-        // console.log(output);
-        this.setState({after: output._query.after});
+        this.after = output._query.after;
         output.forEach(element => {
-          this.state.submissions.push(element);
+          this.submissions.push(element);
         });
-        console.log(this.state.submissions[0]);
+        console.log(this.submissions[0]);
       });
     }
 
     this.interval = setInterval(() => {
-      this.setState({local_post_id: this.state.local_post_id + 1});
-      // this.setState({current_submission: this.state.submissions.shift()});      // mutating this.state.submissions directly! BAD
-      this.change_current_submission(this.state.submissions[0]);
-      this.setState({submissions: this.state.submissions.slice(1)});
-      // console.log(this.state.current_submission);
-      if (this.state.current_submission === undefined) {
-        this.state.reddit.getHot({limit: 100, after: this.state.after})
+      this.local_post_id++;
+      this.change_current_submission(this.submissions[0]);
+      this.submissions = this.submissions.slice(1);
+      if (this.fetch_more === true) {     // bad solution
+        this.state.reddit.getHot({limit: 5, after: this.after})
         .then(output => {
-          this.setState({after: output._query.after});
+          this.after = output._query.after;
           output.forEach(element => {
-            this.state.submissions.push(element);
+            this.submissions.push(element);
           });
         });
       } else {
-        console.log(this.state.current_submission.url);
+        this.log_interesting();
       }
       }, 1000); // HOWEVER, THE BUG IS GONE IF THE TIMER IS BIG ENOUGH TO COVER THE REQUEST
   }
@@ -211,8 +228,8 @@ class App extends Component {
 
   render() {
 
-    // this happens 4 times ! BAD
-    
+    // this happens 2 times ! questionable?
+    // console.log(this.local_post_id);
 
     // still doest want to pass
     // const submission = this.state.current_submission;
@@ -235,8 +252,8 @@ class App extends Component {
         </header> */}
         {/* <ContentFrame local_id={this.state.local_post_id} submission={this.state.current_submission}/> */}
         {/* https://stackoverflow.com/questions/49081549/passing-object-as-props-to-jsx */}
-        <ContentFrame local_id={this.state.local_post_id}/>
-        <RightPanel local_id={this.state.local_post_id}/>
+        <ContentFrame local_id={this.local_post_id}/>
+        <RightPanel local_id={this.local_post_id}/>
       </div>
     );
   }
