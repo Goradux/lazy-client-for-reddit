@@ -29,17 +29,131 @@ class App extends Component {
   }
 
   change_current_submission = (sub) => {
-    this.setState({current_submission: {
-      author: sub.author.name,
-      // comments is a Listing
-      gilded: sub.gilded,
-      id: sub.id,
-      is_video: sub.is_video,
-      is_self: sub.is_self,
-      is_reddit_media_domain: sub.is_reddit_media_domain,
-      //media:
-      no_follow: sub.no_follow,
-    }});
+    if (sub !== undefined) {
+      this.setState({current_submission: {
+        // author: sub.author.name,
+        // // comments is a Listing
+        // gilded: sub.gilded,
+        // id: sub.id,
+        // is_video: sub.is_video,
+        // is_self: sub.is_self,
+        // is_reddit_media_domain: sub.is_reddit_media_domain,
+        // //media:
+        // no_follow: sub.no_follow,
+        all_awardings: 'not supported',
+        allow_live_comments: sub.allow_live_comments,
+        approved_at_utc: 'not supported',
+        approved_by: 'not supported',
+        archived: 'not supported',
+        author: sub.author.name,
+        author_flair_background_color: 'not supported',
+        author_flair_css_class: 'not supported',
+        author_flair_richtext: 'not supported',
+        author_flair_template_id: 'not supported',
+        author_flair_text: 'not supported',
+        author_flair_text_color: 'not supported',
+        author_flair_type: 'not supported',
+        author_fullname: sub.author_fullname,
+        author_patreon_flair: 'not supported',
+        author_premium: 'not supported',
+        awarders: 'not supported',
+        banned_at_utc: 'not supported',
+        banned_by: 'not supported',
+        can_gild: 'not supported',
+        can_mod_post: 'not supported',
+        category: 'not supported',
+        clicked: 'not supported',
+        comments: sub.comments._uri,
+        content_categories: 'not supported',
+        contest_mode: 'not supported',
+        created: sub.created,
+        created_utc: sub.created_utc,
+        discussion_type: 'not supported',
+        distinguished: 'not supported',
+        domain: sub.domain,
+        downs: sub.downs,
+        edited: sub.edited,
+        gilded: sub.gilded,
+        gildings: 'not supported',
+        hidden: sub.hidden,
+        hide_score: 'not supported',
+        id: sub.id,
+        is_crosspostable: sub.is_crosspostable,
+        is_meta: sub.is_meta,
+        is_original_content: sub.is_original_content,
+        is_reddit_media_domain: sub.is_reddit_media_domain,
+        is_robot_indexable: sub.is_robot_indexable,
+        is_self: sub.is_self,
+        is_video: sub.is_video,
+        likes: sub.likes,
+        link_flair_background_color: 'not supported',
+        link_flair_css_class: 'not supported',
+        link_flair_richtext: 'not supported',
+        link_flair_text: 'not supported',
+        link_flair_text_color: 'not supported',
+        link_flair_type: 'not supported',
+        locked: sub.locked,
+        // needs support!!!
+        //media: {reddit_video: {…}},
+        //media_embed: {},
+        media_only: sub.media_only,
+        mod_note: 'not supported',
+        mod_reason_by: 'not supported',
+        mod_reason_title: 'not supported',
+        mod_reports: 'not supported',
+        name: sub.name,
+        no_follow: 'not supported',
+        num_comments: sub.num_comments,
+        num_crossposts: sub.num_crossposts,
+        num_reports: 'not supported',
+        over_18: sub.over_18,
+        parent_whitelist_status: sub.parent_whitelist_status,
+        permalink: sub.permalink,
+        pinned: sub.pinned,
+        // POTENTIALLY USEFUL?
+        // post_hint: "hosted:video",
+        post_hint: sub.post_hint,
+        // ALSO IMPORTANT
+        // preview: {images: Array(1), enabled: false},
+        pwls: sub.pwls,
+        quarantine: sub.quarantine,
+        removal_reason: sub.removal_reason,
+        removed_by: sub.removed_by,
+        removed_by_category: sub.removed_by_category,
+        report_reasons: sub.report_reasons,
+        saved: sub.saved,
+        score: sub.score,
+        // MAYBE IMPORTANT AGAIN
+        // secure_media: {reddit_video: {…}},
+        // secure_media_embed: {},
+        selftext: sub.selftext,
+        selftext_html: sub.selftext_html,
+        send_replies: sub.send_replies,
+        spoiler: sub.spoiler,
+        stickied: sub.stickied,
+        subreddit: sub.subreddit.display_name,
+        subreddit_id: sub.subreddit_id,
+        subreddit_name_prefixed: sub.subreddit_name_prefixed,
+        subreddit_subscribers: sub.subreddit_subscribers,
+        subreddit_type: sub.subreddit_type,
+        suggested_sort: sub.suggested_sort,
+        thumbnail: sub.thumbnail,
+        thumbnail_height: sub.thumbnail_height,
+        thumbnail_width: sub.thumbnail_width,
+        title: sub.title,
+        total_awards_received: sub.total_awards_received,
+        treatment_tags: 'not supported',
+        ups: sub.ups,
+        url: sub.url,
+        user_reports: 'not supported',
+        view_count: 'not supported',
+        visited: sub.visited,
+        whitelist_status: sub.whitelist_status,
+        wls: sub.wls
+      }});
+    } else {
+      this.setState({current_submission: undefined});
+    }
   }
 
   updateDimensions = () => {
@@ -73,7 +187,8 @@ class App extends Component {
 
     this.interval = setInterval(() => {
       this.setState({local_post_id: this.state.local_post_id + 1});
-      this.setState({current_submission: this.state.submissions.shift()});      // mutating this.state.submissions directly! BAD
+      // this.setState({current_submission: this.state.submissions.shift()});      // mutating this.state.submissions directly! BAD
+      this.change_current_submission(this.state.submissions.shift());
       // console.log(this.state.current_submission);
       if (this.state.current_submission === undefined) {
         this.state.reddit.getHot({limit: 100, after: this.state.after})
@@ -84,9 +199,9 @@ class App extends Component {
           });
         });
       } else {                        // ordering here is weird
-        // console.log(this.state.current_submission.url);
+        console.log(this.state.current_submission.url);
       }
-      }, 5000);
+      }, 500);
   }
 
   componentWillUnmount() {
