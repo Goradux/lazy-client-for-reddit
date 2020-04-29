@@ -2,27 +2,21 @@ import React, { Component } from 'react';
 
 export class RightPanel extends Component {
 
-    get_time() {
-        return Math.random();
-    }
+  get_time() {
+    return Math.random();
+  }
 
-    render() {
+  render() {
 
-        console.log(this.props.comments);
-
-        // let x = 'no';
-        // if (this.props.comments !== undefined) {
-        //     x = this.props.comments[0].author;
-        // }
-        // console.log('in right panel:');
-        // console.log(this.props.comments);
-
-        return (
-            <div>
-                Right Panel {this.props.local_post_id}
-            </div>
-        )
-    }
+    return (
+      <div>
+        Right Panel {this.props.local_post_id}
+        {
+          this.props.comments.map(comment => (comment.author.concat(' ')))
+        }
+      </div>
+    )
+  }
 }
 
 export default RightPanel;
