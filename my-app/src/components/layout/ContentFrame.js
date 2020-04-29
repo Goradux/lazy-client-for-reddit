@@ -26,7 +26,7 @@ export class ContentFrame extends Component {
 
         return (
             <div>
-                Content Frame {this.props.local_id} {x}
+                Content Frame {this.props.local_post_id} {x}
             </div>
         )
     }

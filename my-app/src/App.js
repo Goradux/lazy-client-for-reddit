@@ -10,154 +10,149 @@ class App extends Component {
   display_options = ['hot', 'top', 'new', 'rising'];
   after = 0;
   submissions = [];
-  local_post_id = 0;
+  submission = null;
   fetch_more = false;
-  current_submission = null;
   comments = [];
+  // there is a problem here.
+  // this shit should automatically ask for a login, without hardcoded stuff
   reddit_credentials = {
     userAgent: 'Lazy Reddit',
     clientId: "YeMQjOy7Vc-TTw",                           // app ID
     clientSecret: 'SkO9R2trQzwQp2mOs-VXo7K0BpE',
     refreshToken: '59264954-4ZEIHuZY9N6p-70okhuxJqSyads'
   }
+  reddit = null;
+  _first = true;
 
-  // there is a problem here.
-  // this shit should automatically ask for a login, without hardcoded stuff
   state = {
     window_width: 0,
     window_height: 0,
-    current_submission: null,
     _first: true,
     reddit: null,
+    local_post_id: 0,
   }
 
-  change_current_submission = (sub) => {
-    if (sub !== undefined) {
-      this.fetch_more = false;
-      this.setState({current_submission: {
-        // author: sub.author.name,
-        // // comments is a Listing
-        // gilded: sub.gilded,
-        // id: sub.id,
-        // is_video: sub.is_video,
-        // is_self: sub.is_self,
-        // is_reddit_media_domain: sub.is_reddit_media_domain,
-        // //media:
-        // no_follow: sub.no_follow,
-        all_awardings: 'not supported',
-        allow_live_comments: sub.allow_live_comments,
-        approved_at_utc: 'not supported',
-        approved_by: 'not supported',
-        archived: 'not supported',
-        author: sub.author.name,
-        author_flair_background_color: 'not supported',
-        author_flair_css_class: 'not supported',
-        author_flair_richtext: 'not supported',
-        author_flair_template_id: 'not supported',
-        author_flair_text: 'not supported',
-        author_flair_text_color: 'not supported',
-        author_flair_type: 'not supported',
-        author_fullname: sub.author_fullname,
-        author_patreon_flair: 'not supported',
-        author_premium: 'not supported',
-        awarders: 'not supported',
-        banned_at_utc: 'not supported',
-        banned_by: 'not supported',
-        can_gild: 'not supported',
-        can_mod_post: 'not supported',
-        category: 'not supported',
-        clicked: 'not supported',
-        comments: sub.comments._uri,
-        content_categories: 'not supported',
-        contest_mode: 'not supported',
-        created: sub.created,
-        created_utc: sub.created_utc,
-        discussion_type: 'not supported',
-        distinguished: 'not supported',
-        domain: sub.domain,
-        downs: sub.downs,
-        edited: sub.edited,
-        gilded: sub.gilded,
-        gildings: 'not supported',
-        hidden: sub.hidden,
-        hide_score: 'not supported',
-        id: sub.id,
-        is_crosspostable: sub.is_crosspostable,
-        is_meta: sub.is_meta,
-        is_original_content: sub.is_original_content,
-        is_reddit_media_domain: sub.is_reddit_media_domain,
-        is_robot_indexable: sub.is_robot_indexable,
-        is_self: sub.is_self,
-        is_video: sub.is_video,
-        likes: sub.likes,
-        link_flair_background_color: 'not supported',
-        link_flair_css_class: 'not supported',
-        link_flair_richtext: 'not supported',
-        link_flair_text: 'not supported',
-        link_flair_text_color: 'not supported',
-        link_flair_type: 'not supported',
-        locked: sub.locked,
-        // needs support!!!
-        //media: {reddit_video: {…}},
-        //media_embed: {},
-        media_only: sub.media_only,
-        mod_note: 'not supported',
-        mod_reason_by: 'not supported',
-        mod_reason_title: 'not supported',
-        mod_reports: 'not supported',
-        name: sub.name,
-        no_follow: 'not supported',
-        num_comments: sub.num_comments,
-        num_crossposts: sub.num_crossposts,
-        num_reports: 'not supported',
-        over_18: sub.over_18,
-        parent_whitelist_status: sub.parent_whitelist_status,
-        permalink: sub.permalink,
-        pinned: sub.pinned,
-        // POTENTIALLY USEFUL?
-        // post_hint: "hosted:video",
-        post_hint: sub.post_hint,
-        // ALSO IMPORTANT
-        // preview: {images: Array(1), enabled: false},
-        pwls: sub.pwls,
-        quarantine: sub.quarantine,
-        removal_reason: sub.removal_reason,
-        removed_by: sub.removed_by,
-        removed_by_category: sub.removed_by_category,
-        report_reasons: sub.report_reasons,
-        saved: sub.saved,
-        score: sub.score,
-        // MAYBE IMPORTANT AGAIN
-        // secure_media: {reddit_video: {…}},
-        // secure_media_embed: {},
-        selftext: sub.selftext,
-        selftext_html: sub.selftext_html,
-        send_replies: sub.send_replies,
-        spoiler: sub.spoiler,
-        stickied: sub.stickied,
-        subreddit: sub.subreddit.display_name,
-        subreddit_id: sub.subreddit_id,
-        subreddit_name_prefixed: sub.subreddit_name_prefixed,
-        subreddit_subscribers: sub.subreddit_subscribers,
-        subreddit_type: sub.subreddit_type,
-        suggested_sort: sub.suggested_sort,
-        thumbnail: sub.thumbnail,
-        thumbnail_height: sub.thumbnail_height,
-        thumbnail_width: sub.thumbnail_width,
-        title: sub.title,
-        total_awards_received: sub.total_awards_received,
-        treatment_tags: 'not supported',
-        ups: sub.ups,
-        url: sub.url,
-        user_reports: 'not supported',
-        view_count: 'not supported',
-        visited: sub.visited,
-        whitelist_status: sub.whitelist_status,
-        wls: sub.wls,
-      }});
-    } else {
-      // this.setState({current_submission: undefined});
-      this.fetch_more = true;
+  refactor_submission = (sub) => {
+    return {
+      // author: sub.author.name,
+      // // comments is a Listing
+      // gilded: sub.gilded,
+      // id: sub.id,
+      // is_video: sub.is_video,
+      // is_self: sub.is_self,
+      // is_reddit_media_domain: sub.is_reddit_media_domain,
+      // //media:
+      // no_follow: sub.no_follow,
+      all_awardings: 'not supported',
+      allow_live_comments: sub.allow_live_comments,
+      approved_at_utc: 'not supported',
+      approved_by: 'not supported',
+      archived: 'not supported',
+      author: sub.author.name,
+      author_flair_background_color: 'not supported',
+      author_flair_css_class: 'not supported',
+      author_flair_richtext: 'not supported',
+      author_flair_template_id: 'not supported',
+      author_flair_text: 'not supported',
+      author_flair_text_color: 'not supported',
+      author_flair_type: 'not supported',
+      author_fullname: sub.author_fullname,
+      author_patreon_flair: 'not supported',
+      author_premium: 'not supported',
+      awarders: 'not supported',
+      banned_at_utc: 'not supported',
+      banned_by: 'not supported',
+      can_gild: 'not supported',
+      can_mod_post: 'not supported',
+      category: 'not supported',
+      clicked: 'not supported',
+      comments: sub.comments._uri,
+      content_categories: 'not supported',
+      contest_mode: 'not supported',
+      created: sub.created,
+      created_utc: sub.created_utc,
+      discussion_type: 'not supported',
+      distinguished: 'not supported',
+      domain: sub.domain,
+      downs: sub.downs,
+      edited: sub.edited,
+      gilded: sub.gilded,
+      gildings: 'not supported',
+      hidden: sub.hidden,
+      hide_score: 'not supported',
+      id: sub.id,
+      is_crosspostable: sub.is_crosspostable,
+      is_meta: sub.is_meta,
+      is_original_content: sub.is_original_content,
+      is_reddit_media_domain: sub.is_reddit_media_domain,
+      is_robot_indexable: sub.is_robot_indexable,
+      is_self: sub.is_self,
+      is_video: sub.is_video,
+      likes: sub.likes,
+      link_flair_background_color: 'not supported',
+      link_flair_css_class: 'not supported',
+      link_flair_richtext: 'not supported',
+      link_flair_text: 'not supported',
+      link_flair_text_color: 'not supported',
+      link_flair_type: 'not supported',
+      locked: sub.locked,
+      // needs support!!!
+      //media: {reddit_video: {…}},
+      //media_embed: {},
+      media_only: sub.media_only,
+      mod_note: 'not supported',
+      mod_reason_by: 'not supported',
+      mod_reason_title: 'not supported',
+      mod_reports: 'not supported',
+      name: sub.name,
+      no_follow: 'not supported',
+      num_comments: sub.num_comments,
+      num_crossposts: sub.num_crossposts,
+      num_reports: 'not supported',
+      over_18: sub.over_18,
+      parent_whitelist_status: sub.parent_whitelist_status,
+      permalink: sub.permalink,
+      pinned: sub.pinned,
+      // POTENTIALLY USEFUL?
+      // post_hint: "hosted:video",
+      post_hint: sub.post_hint,
+      // ALSO IMPORTANT
+      // preview: {images: Array(1), enabled: false},
+      pwls: sub.pwls,
+      quarantine: sub.quarantine,
+      removal_reason: sub.removal_reason,
+      removed_by: sub.removed_by,
+      removed_by_category: sub.removed_by_category,
+      report_reasons: sub.report_reasons,
+      saved: sub.saved,
+      score: sub.score,
+      // MAYBE IMPORTANT AGAIN
+      // secure_media: {reddit_video: {…}},
+      // secure_media_embed: {},
+      selftext: sub.selftext,
+      selftext_html: sub.selftext_html,
+      send_replies: sub.send_replies,
+      spoiler: sub.spoiler,
+      stickied: sub.stickied,
+      subreddit: sub.subreddit.display_name,
+      subreddit_id: sub.subreddit_id,
+      subreddit_name_prefixed: sub.subreddit_name_prefixed,
+      subreddit_subscribers: sub.subreddit_subscribers,
+      subreddit_type: sub.subreddit_type,
+      suggested_sort: sub.suggested_sort,
+      thumbnail: sub.thumbnail,
+      thumbnail_height: sub.thumbnail_height,
+      thumbnail_width: sub.thumbnail_width,
+      title: sub.title,
+      total_awards_received: sub.total_awards_received,
+      treatment_tags: 'not supported',
+      ups: sub.ups,
+      url: sub.url,
+      user_reports: 'not supported',
+      view_count: 'not supported',
+      visited: sub.visited,
+      whitelist_status: sub.whitelist_status,
+      wls: sub.wls,
     }
   }
 
@@ -234,14 +229,16 @@ class App extends Component {
 
   log_interesting = () => {
     console.log('---------------');
-    console.log(this.state.current_submission.subreddit);
-    console.log(this.state.current_submission.post_hint);
-    console.log(this.state.current_submission.title);
-    if (this.state.current_submission.selftext !== '')
-      console.log(this.state.current_submission.selftext);
-    console.log(this.state.current_submission.url);
-    console.log(this.state.current_submission.author);
-    console.log(this.state.current_submission.ups);
+    console.log(this.submission.subreddit);
+    console.log(this.submission.post_hint);
+    console.log(this.submission.title);
+    if (this.submission.selftext !== '')
+      console.log(this.submission.selftext);
+    else
+      console.log('🛑🛑🛑 no body 🛑🛑🛑');
+    console.log(this.submission.url);
+    console.log(this.submission.author);
+    console.log(this.submission.ups);
   }
 
   updateDimensions = () => {
@@ -251,66 +248,49 @@ class App extends Component {
     this.setState({windowWidth, windowHeight});
   }
 
-  componentDidMount() {
-    if (this.state._first) {
-      const r = new snoowrap(this.reddit_credentials);
-      this.setState({
-        reddit: r,
-        _first: false,
+  update_submission_and_comments = () => {
+    this.submission = this.refactor_submission(this.submissions[0]);
+    this.submissions[0].comments.fetchMore({amount: 5, skipReplies: true})
+    .then(comments => {
+      this.comments = [];
+      comments.forEach(comment => {
+        this.comments.push(this.refactor_comment(comment));
       });
+      this.submissions = this.submissions.slice(1);
+      this.log_interesting();
+      this.setState({local_post_id: this.state.local_post_id + 1});
+    });
+  }
+
+  main_loop = () => {
+    if (this.submissions.length === 0) {
+      this.reddit.getHot({limit: 5, after: this.after})
+      .then(posts => {
+        this.after = posts._query.after;
+        posts.forEach(post => {
+          this.submissions.push(post);
+        });
+        this.update_submission_and_comments();        
+      });
+    } else {
+      this.update_submission_and_comments();
+    }
+  }
+
+  componentDidMount() {
+    if (this._first) {
+      this.reddit = new snoowrap(this.reddit_credentials);
+      this._first = false;
       // r.getSubscriptions({limit: 10})
       // .then((output) => {
       //   output.forEach(element => {
       //     this.state.subs.push(element.display_name);
       //   });
       // });
-      r.getHot({limit: 2})
-      // r.getSubreddit('jokes').getHot({limit: 100})
-      .then(output => {
-        this.after = output._query.after;
-        output.forEach(element => {
-          this.submissions.push(element);
-        });
-        console.log(this.submissions[0]);
-        // console.log(this.submissions[0].comments);
-
-
-
-
-        this.submissions[0].comments.fetchMore({amount: 5, skipReplies: true})
-        .then(output => {
-          this.comments = [];
-          output.forEach(element => {
-            this.comments.push(this.refactor_comment(element));
-          });
-          this.setState({comments: this.comments});
-          console.log('in main:');
-          console.log(this.comments);
-        });
-
-
-
-        // r.getSubmission('4e62ml').upvote()
-      });
     }
 
-    this.interval = setInterval(() => {
-      this.local_post_id++;
-
-      this.change_current_submission(this.submissions[0]);
-      this.submissions = this.submissions.slice(1);
-      if (this.fetch_more === true) {     // bad solution
-        this.state.reddit.getHot({limit: 5, after: this.after})
-        .then(output => {
-          this.after = output._query.after;
-          output.forEach(element => {
-            this.submissions.push(element);
-          });
-        });
-      } else {
-        // this.log_interesting();
-      }
-      }, 5000); // HOWEVER, THE BUG IS GONE IF THE TIMER IS BIG ENOUGH TO COVER THE REQUEST
+    this.main_loop();
+    this.interval = setInterval(this.main_loop, 5000); // HOWEVER, THE BUG IS GONE IF THE TIMER IS BIG ENOUGH TO COVER THE REQUEST
   }
 
   componentWillUnmount() {
@@ -320,7 +300,7 @@ class App extends Component {
   render() {
 
     // this happens 2 times ! questionable?
-    // console.log(this.local_post_id);
+    // console.log(this.state.local_post_id);
 
     return (
       <div className="App">
@@ -338,10 +318,8 @@ class App extends Component {
             Learn React
           </a>
         </header> */}
-        {/* <ContentFrame local_id={this.state.local_post_id} submission={this.state.current_submission}/> */}
-        {/* https://stackoverflow.com/questions/49081549/passing-object-as-props-to-jsx */}
-        <ContentFrame local_id={this.local_post_id} submission={this.state.current_submission}/>
-        <RightPanel local_id={this.local_post_id} comments={this.comments}/>
+        <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission}/>
+        <RightPanel local_post_id={this.state.local_post_id} comments={this.comments}/>
       </div>
     );
   }

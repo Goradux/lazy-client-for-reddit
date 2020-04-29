@@ -7,6 +7,9 @@ export class RightPanel extends Component {
     }
 
     render() {
+
+        console.log(this.props.comments);
+
         // let x = 'no';
         // if (this.props.comments !== undefined) {
         //     x = this.props.comments[0].author;
@@ -16,7 +19,7 @@ export class RightPanel extends Component {
 
         return (
             <div>
-                Right Panel {this.props.local_id}
+                Right Panel {this.props.local_post_id}
             </div>
         )
     }
