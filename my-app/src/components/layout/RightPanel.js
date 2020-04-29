@@ -7,6 +7,13 @@ export class RightPanel extends Component {
     }
 
     render() {
+        // let x = 'no';
+        // if (this.props.comments !== undefined) {
+        //     x = this.props.comments[0].author;
+        // }
+        // console.log('in right panel:');
+        // console.log(this.props.comments);
+
         return (
             <div>
                 Right Panel {this.props.local_id}

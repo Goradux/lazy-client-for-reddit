@@ -12,23 +12,22 @@ class App extends Component {
   submissions = [];
   local_post_id = 0;
   fetch_more = false;
+  current_submission = null;
+  comments = [];
+  reddit_credentials = {
+    userAgent: 'Lazy Reddit',
+    clientId: "YeMQjOy7Vc-TTw",                           // app ID
+    clientSecret: 'SkO9R2trQzwQp2mOs-VXo7K0BpE',
+    refreshToken: '59264954-4ZEIHuZY9N6p-70okhuxJqSyads'
+  }
 
   // there is a problem here.
   // this shit should automatically ask for a login, without hardcoded stuff
   state = {
-    reddit_credentials: {
-      userAgent: 'Lazy Reddit',
-      clientId: "YeMQjOy7Vc-TTw",                           // app ID
-      clientSecret: 'SkO9R2trQzwQp2mOs-VXo7K0BpE',
-      refreshToken: '59264954-4ZEIHuZY9N6p-70okhuxJqSyads'
-    },
     window_width: 0,
     window_height: 0,
-    submissions: [],
-    after: null,
     current_submission: null,
     _first: true,
-    local_post_id: 0,
     reddit: null,
   }
 
@@ -154,13 +153,85 @@ class App extends Component {
         view_count: 'not supported',
         visited: sub.visited,
         whitelist_status: sub.whitelist_status,
-        wls: sub.wls
+        wls: sub.wls,
       }});
     } else {
       // this.setState({current_submission: undefined});
       this.fetch_more = true;
     }
   }
+
+  refactor_comment = (comment) => {
+    return {
+      all_awardings: 'not supported',
+      approved_at_utc: 'not supported',
+      approved_by: 'not supported',
+      archived: 'not supported',
+      associated_award: 'not supported',
+      author: comment.author.name,
+      author_flair_background_color: 'not supported',
+      author_flair_css_class: 'not supported',
+      author_flair_richtext: 'not supported',
+      author_flair_template_id: 'not supported',
+      author_flair_text: 'not supported',
+      author_flair_text_color: 'not supported',
+      author_flair_type: 'not supported',
+      author_fullname: comment.author_fullname,
+      author_patreon_flair: 'not supported',
+      author_premium: 'not supported',
+      awarders: 'not supported',
+      banned_at_utc: 'not supported',
+      banned_by: 'not supported',
+      body: comment.body,
+      body_html: comment.body_html,
+      can_gild: 'not supported',
+      can_mod_post: 'not supported',
+      collapsed: 'not supported',
+      collapsed_because_crowd_control: 'not supported',
+      collapsed_reason: 'not supported',
+      controversiality: comment.controversiality,
+      created: comment.created,
+      created_utc: comment.created_utc,
+      depth: comment.depth,
+      distinguished: 'not supported',
+      downs: comment.downs,
+      edited: comment.edited,
+      gilded: comment.gilded,
+      gildings: 'not supported',
+      id: comment.id,
+      is_submitter: comment.is_submitter,
+      likes: comment.likes,
+      link_id: comment.link_id,
+      locked: comment.locked,
+      mod_note: 'not supported',
+      mod_reason_by: 'not supported',
+      mod_reason_title: 'not supported',
+      mod_reports: 'not supported',
+      name: comment.name,
+      no_follow: 'not supported',
+      num_reports: 'not supported',
+      parent_id: comment.parent_id,
+      permalink: comment.permalink,
+      removal_reason: 'not supported',
+      // replies: Listing(7) [Comment, Comment, Comment, Comment, Comment, Comment, Comment, _r: snoowrap, _cachedLookahead: null, _query: {…}, _method: "get", _transform: ƒ, …],
+      replies: 'not supported',
+      report_reasons: 'not supported',
+      saved: 'not supported',
+      score: comment.score,
+      score_hidden: comment.score_hidden,
+      send_replies: comment.send_replies,
+      stickied: comment.stickied,
+      subreddit: comment.subreddit.display_name,
+      subreddit_id: comment.subreddit_id,
+      subreddit_name_prefixed: comment.subreddit_name_prefixed,
+      subreddit_type: comment.subreddit_type,
+      total_awards_received: comment.total_awards_received,
+      treatment_tags: 'not supported',
+      ups: comment.ups,
+      user_reports: 'not supported',
+    }
+  }
+
   log_interesting = () => {
     console.log('---------------');
     console.log(this.state.current_submission.subreddit);
@@ -182,7 +253,7 @@ class App extends Component {
 
   componentDidMount() {
     if (this.state._first) {
-      const r = new snoowrap(this.state.reddit_credentials);
+      const r = new snoowrap(this.reddit_credentials);
       this.setState({
         reddit: r,
         _first: false,
@@ -201,11 +272,31 @@ class App extends Component {
           this.submissions.push(element);
         });
         console.log(this.submissions[0]);
+        // console.log(this.submissions[0].comments);
+
+
+
+
+        this.submissions[0].comments.fetchMore({amount: 5, skipReplies: true})
+        .then(output => {
+          this.comments = [];
+          output.forEach(element => {
+            this.comments.push(this.refactor_comment(element));
+          });
+          this.setState({comments: this.comments});
+          console.log('in main:');
+          console.log(this.comments);
+        });
+
+
+
+        // r.getSubmission('4e62ml').upvote()
       });
     }
 
     this.interval = setInterval(() => {
       this.local_post_id++;
+
       this.change_current_submission(this.submissions[0]);
       this.submissions = this.submissions.slice(1);
       if (this.fetch_more === true) {     // bad solution
@@ -217,9 +308,9 @@ class App extends Component {
           });
         });
       } else {
-        this.log_interesting();
+        // this.log_interesting();
       }
-      }, 1000); // HOWEVER, THE BUG IS GONE IF THE TIMER IS BIG ENOUGH TO COVER THE REQUEST
+      }, 5000); // HOWEVER, THE BUG IS GONE IF THE TIMER IS BIG ENOUGH TO COVER THE REQUEST
   }
 
   componentWillUnmount() {
@@ -230,9 +321,6 @@ class App extends Component {
 
     // this happens 2 times ! questionable?
     // console.log(this.local_post_id);
-
-    // still doest want to pass
-    // const submission = this.state.current_submission;
 
     return (
       <div className="App">
@@ -252,8 +340,8 @@ class App extends Component {
         </header> */}
         {/* <ContentFrame local_id={this.state.local_post_id} submission={this.state.current_submission}/> */}
         {/* https://stackoverflow.com/questions/49081549/passing-object-as-props-to-jsx */}
-        <ContentFrame local_id={this.local_post_id}/>
-        <RightPanel local_id={this.local_post_id}/>
+        <ContentFrame local_id={this.local_post_id} submission={this.state.current_submission}/>
+        <RightPanel local_id={this.local_post_id} comments={this.comments}/>
       </div>
     );
   }
