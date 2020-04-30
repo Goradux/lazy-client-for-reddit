@@ -5,6 +5,14 @@ import snoowrap from 'snoowrap';
 import ContentFrame from './components/layout/ContentFrame';
 import RightPanel from './components/layout/RightPanel';
 
+// https://reacttraining.com/react-router/web/guides/quick-start
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom';
+
 class App extends Component {
 
   display_options = ['hot', 'top', 'new', 'rising'];
@@ -23,6 +31,7 @@ class App extends Component {
   }
   reddit = null;
   _first = true;
+  code = null;
 
   state = {
     window_width: 0,
@@ -30,6 +39,7 @@ class App extends Component {
     _first: true,
     reddit: null,
     local_post_id: 0,
+    auth_url: '/',
   }
 
   refactor_submission = (sub) => {
@@ -279,23 +289,56 @@ class App extends Component {
 
   componentDidMount() {
     if (this._first) {
-      this.reddit = new snoowrap(this.reddit_credentials);
+      // this.reddit = new snoowrap(this.reddit_credentials);
       this._first = false;
-      // r.getSubscriptions({limit: 10})
-      // .then((output) => {
-      //   output.forEach(element => {
-      //     this.state.subs.push(element.display_name);
-      //   });
-      // });
+      const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      if (this.code === null) {
+        const auth_url = snoowrap.getAuthUrl({
+          clientId: "YeMQjOy7Vc-TTw",                     // client ID
+          clientSecret: 'SkO9R2trQzwQp2mOs-VXo7K0BpE',        // client secret
+          scope: ['identity', 'mysubreddits', 'read', 'report', 'submit', 'vote', 'subscribe'],
+          redirectUri: 'http://localhost:3000/',
+          permanent: true,
+          state: state,
+        });
+        this.setState({auth_url: auth_url});
+      }
+      this.code = new URL(window.location.href).searchParams.get('code');
+      if (this.code !== null) {
+        snoowrap.fromAuthCode({
+          code: this.code,
+          userAgent: 'Lazy Reddit',
+          clientId: this.reddit_credentials.clientId,
+          clientSecret: this.reddit_credentials.clientSecret,
+          redirectUri: 'http://localhost:3000/'
+        })
+        .then(r => {
+          // Now we have a requester that can access reddit through the user's account
+          this.reddit = r;
+          // return r.getHot().then(posts => {
+          //   // do something with posts from the front page
+          // });
+
+          this.main_loop();
+          this.interval = setInterval(this.main_loop, 5000); // HOWEVER, THE BUG IS GONE IF THE TIMER IS BIG ENOUGH TO COVER THE REQUEST
+        })
+      }
     }
 
-    this.main_loop();
-    this.interval = setInterval(this.main_loop, 5000); // HOWEVER, THE BUG IS GONE IF THE TIMER IS BIG ENOUGH TO COVER THE REQUEST
+    // if (this.code !== null && this.reddit !== null) {
+    //   this.main_loop();
+    //   this.interval = setInterval(this.main_loop, 5000); // HOWEVER, THE BUG IS GONE IF THE TIMER IS BIG ENOUGH TO COVER THE REQUEST
+    // }
+    
+    
+    
+    
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
+
 
   render() {
 
@@ -318,11 +361,40 @@ class App extends Component {
             Learn React
           </a>
         </header> */}
-        <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission}/>
-        <RightPanel local_post_id={this.state.local_post_id} comments={this.comments}/>
+
+
+        {/* <div style={mainStyle}>
+          <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission}/>
+        </div>
+        <div style={offStyle}>
+          <RightPanel local_post_id={this.state.local_post_id} comments={this.comments}/>
+        </div> */}
+
+          <a
+            className="App-link"
+            href={this.state.auth_url}
+            target="_self"
+            rel="noopener noreferrer"
+          >
+            Get token from Reddit.com
+          </a>
+
       </div>
     );
   }
+}
+
+const mainStyle = {
+  backgroundColor: 'grey',
+  width: '70%',
+  height: '100%',
+  display: 'inline-block',
+}
+
+const offStyle = {
+  width: '30%',
+  height: '100%',
+  display: 'inline-block',
 }
 
 export default App;

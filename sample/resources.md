@@ -33,3 +33,8 @@ installed app
 name sdFYMdVeMGtguQ
 
 ---
+
+
+
+https://github.com/reddit-archive/reddit/wiki/JSON
+https://github.com/ryan-cd/RedditConsoleBrowser/blob/master/RedditConsoleBrowser.py

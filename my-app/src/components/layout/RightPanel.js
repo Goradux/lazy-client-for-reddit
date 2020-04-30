@@ -9,7 +9,7 @@ export class RightPanel extends Component {
   render() {
 
     return (
-      <div>
+      <div style={rightPanelStyle}>
         Right Panel {this.props.local_post_id}
         {
           this.props.comments.map(comment => (comment.author.concat(' ')))
@@ -17,6 +17,11 @@ export class RightPanel extends Component {
       </div>
     )
   }
+}
+
+const rightPanelStyle = {
+  backgroundColor: 'green',
+  width: '100%',
 }
 
 export default RightPanel;
