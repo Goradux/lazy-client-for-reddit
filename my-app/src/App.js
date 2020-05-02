@@ -103,19 +103,23 @@ class App extends Component {
             </Route>
             <Route path='/'>
               {/* <div className="App"> */}
-              <div style={this.commonStyle()}>
-                <div style={loginBox}>
-                  <div style={topBar}>
+              <div id='custom-root' style={this.commonStyle()}>
+                <div id='login-box' style={loginBox}>
+                  {/* <div style={topBar}>
                     <div style={headerStyle}>Lazy Client for Reddit</div>
-                  </div>
-                  <div style={buttonBox}>
+                  </div> */}
+                  <span id='upper-header' style={upperHeaderStyle}>Lazy Client</span>
+                  {/* <span>Lazy Client</span> */}
+                  <span id='lower-header' style={lowerHeaderStyle}>for Reddit</span>
+                  <span id='text' style={textStyle}>Too lazy to scroll through your posts? Say no more!</span>
+                  <div id='button-box' style={buttonBox}>
                     <a
-                        className="App-link"
+                        className="login-button"
                         href={this.state.auth_url}
                         target="_self"
                         // rel="noopener noreferrer"
                       >
-                        Login
+                        Login via Reddit
                     </a>
                   </div>
                 </div>
@@ -136,36 +140,53 @@ const loginBox = {
   minHeight: '250px',
   borderStyle: 'solid',
   border: '1px white',
-  borderRadius: '5px',
-};
-
-const topBar = {
-  backgroundColor: 'rgb(255,69,0)',
-  width: '100%',
-  height: '20%',
-  // borderBottomStyle: '',
-  display: 'block',
-  margin: '0',
-  borderBottomStyle: 'solid',
-  borderBottom: '1px white',
-  borderRadius: '5px 5px 0px 0px',
+  borderRadius: '10px',
+  color: 'rgb(51,51,51)',
+  // "width":"390px",
+  // "overflow":"hidden",
+  padding: "20px 55px 33px 55px",
+  boxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  MozBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  WebkitBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  OBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  MsBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
 };
 
 const buttonBox = {
   width: '100%',
-  height: '80%',
+  // height: '80%',
+  height: '45%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   // color: 'black',
 };
 
-const headerStyle = {
-  textAlign: 'center',
-  // paddingTop: '10%',
-  lineHeight: '50px',
-  fontSize: '25px',
+const upperHeaderStyle = {
+  display: 'block',
+  fontSize: '30px',
   fontWeight: 'bold',
+  textAlign: 'center',
+  paddingBottom: '15px',
+};
+
+const lowerHeaderStyle = {
+  display: 'block',
+  fontSize: '20px',
+  fontWeight: 'bold',
+  textAlign: 'center',
+  paddingBottom: '10px',
+};
+
+const textStyle = {
+  textAlign: 'center',
 }
 
 export default App;
+
+
+// https://staxmanade.com/CssToReact/
+// amazing tool
+
+
+// maybe add a bar on top of the page with my info?

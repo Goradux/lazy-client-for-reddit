@@ -275,7 +275,7 @@ export class Browser extends Component {
   }
 
   componentDidMount() {
-    this.code = new URL(window.location.href).searchParams.get('code');
+    // this.code = new URL(window.location.href).searchParams.get('code');
     // if (this.code !== null) {
     //   snoowrap.fromAuthCode({
     //     code: this.code,

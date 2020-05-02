@@ -17,3 +17,6 @@ export class ContentFrame extends Component {
 }
 
 export default ContentFrame;
+
+
+// https://stackoverflow.com/questions/35537229/how-to-update-parents-state-in-react

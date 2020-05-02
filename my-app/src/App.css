@@ -24,26 +24,41 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.login-button {
+  width: 100%;
+  text-align: center;
   background-color: rgb(255,69,0);
-  box-shadow: 0 5px 0 darkred;
-  border-radius: 3px;
-  color: black;
-  font-weight: bold;
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.5);
+  border-radius: 25px;
+  color: white;
+  /* font-weight: bold; */
   padding: 1em 1.5em;
   position: relative;
   text-decoration: none;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
+  font-weight: 600;
+  font-size: 15px;
+
+  /* color and animation? */
+  /* background: #a64bf4;
+  background: -webkit-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff); */
+  /* background: -o-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
+  background: -moz-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff); */
+  /* background: linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff); */
+  /* top: 0;
+  left: -100%;
+  -webkit-transition: all 0.4s; */
+  /* -o-transition: all 0.4s;
+  -moz-transition: all 0.4s; */
+  transition: all 1s;
 }
 
-.App-link:hover {
+.login-button:hover {
   background-color: #ce0606;
   cursor: pointer;
 }
 
-.App-link:active {
-  box-shadow: none;
+.login-button:active {
   top: 5px;
 }
 
