@@ -22,6 +22,9 @@ export class RightPanel extends Component {
 const rightPanelStyle = {
   backgroundColor: 'green',
   width: '100%',
+  height: '100%',
+  // display: 'inline-block',
+  // overflow: 'hidden',
 }
 
 export default RightPanel;

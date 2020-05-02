@@ -99,7 +99,9 @@ class App extends Component {
           {/* </div> */}
           <Switch>
             <Route path='/browse'>
-              <Browser/>
+              <div id='browse' style={this.commonStyle()}>
+                <Browser/>
+              </div>
             </Route>
             <Route path='/'>
               {/* <div className="App"> */}

@@ -320,7 +320,7 @@ export class Browser extends Component {
 }
 
 const mainStyle = {
-  backgroundColor: 'grey',
+  // backgroundColor: 'grey',
   width: '70%',
   height: '100%',
   display: 'inline-block',
