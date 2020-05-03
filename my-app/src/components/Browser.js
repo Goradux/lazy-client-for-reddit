@@ -307,7 +307,7 @@ export class Browser extends Component {
 
   render() {
     return (
-      <div style={{width: '100%', height: '100%'}}>
+      <div style={{width: '100%', height: '100%', display: 'flex'}}>
           <div style={mainStyle}>
             <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission}/>
           </div>
@@ -323,13 +323,13 @@ const mainStyle = {
   // backgroundColor: 'grey',
   width: '70%',
   height: '100%',
-  display: 'inline-block',
+  // display: 'inline-block',
 }
 
 const offStyle = {
   width: '30%',
   height: '100%',
-  display: 'inline-block',
+  // display: 'inline-block',
 }
 
 export default Browser;

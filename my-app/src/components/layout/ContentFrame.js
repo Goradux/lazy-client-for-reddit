@@ -16,10 +16,14 @@ export class ContentFrame extends Component {
       <div style={{width: '100%', height: '100%', display: 'inline-block'}}>
         <div id='header-wrapper' style={headerWrapperStyle}>
           <div id='score' style={scoreStyle}>
-            100
+            {/* insert an arrow up above */}
+            {submission.score}
+            {/* insert an arrow down below */}
           </div>
-          <div id='header' style={headerStyle}>
-            {submission.title}
+          <div id='title' style={titleStyle}>
+            Brazil's President Is Out With Another Super-Bad Coronavirus Take: Soccer Players Can't more text Brazil's President Is Out With Another Super-Bad Coronavirus Take: Soccer Players Can't more text Brazil's President Is Out With Another Super-Bad Coronavirus Take: Soccer Players Can't more text
+            {/* the length of 1 line */}
+            {/* {submission.title ? submission.title : submission.title} */}
           </div>
         </div>
         
@@ -35,10 +39,30 @@ export class ContentFrame extends Component {
 
 const headerWrapperStyle = {
   width: '100%',
-  height: '18%',
+  height: '10%',
+  display: 'flex',
+  boxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  MozBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  WebkitBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  OBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  MsBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  borderRadius: '0px 0px 20px 20px',
 }
 
-const headerStyle = {
+const scoreStyle = {
+  height: '100%',
+  width: '5%',
+  display: 'flex',
+  padding: '10px',
+  color: 'white',
+  backgroundColor: 'rgb(51,51,51)',
+  borderRight: '2px solid rgba(255,255,255,0.73)',
+  borderRadius: '0px 0px 0px 20px',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+const titleStyle = {
   width: '95%',
   height: '100%',
   // minHeight: '3rem',
@@ -47,22 +71,32 @@ const headerStyle = {
   color: 'white',
   fontSize: '30px',
   padding: '10px',
-  display: 'inline-block',
+  // display: 'flex',
   justifyContent: 'left',
   alignItems: 'center',
+  borderRadius: '0px 0px 20px 0px',
+  // overflow: 'hidden',
+  // textOverflow: 'ellipsis',
+  // whiteSpace: 'nowrap',
 };
 
 const mainBackgroundStyle = {
-  backgroundColor: 'rgb(200,200,200)',
-  width: '100%',
-  height: '82%',
+  // backgroundColor: 'rgb(200,200,200)',
+  backgroundColor: 'white',
+  marginLeft: '2.5%',
+  width: '95%',
+  height: '90%',
+  boxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  MozBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  WebkitBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  OBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  MsBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  borderRadius: '20px 20px 20px 20px',
+  padding: '10px',
+
 }
 
-const scoreStyle = {
-  height: '100%',
-  width: '5%',
-  display: 'inline-block',
-};
+
 
 export default ContentFrame;
 
