@@ -19,6 +19,8 @@ export class Browser extends Component {
   reddit = null;
   _first = true;
   code = null;
+  upvote_DEBUG = false;
+  downvote_DEBUG = false;
 
   state = {
     window_width: 0,
@@ -304,12 +306,21 @@ export class Browser extends Component {
     clearInterval(this.interval);
   }
 
+  upvote() {
+    this.upvote_DEBUG = true;
+    console.log(this.upvote_DEBUG);
+  }
+
+  downvote() {
+    this.downvote_DEBUG = true;
+    console.log(this.downvote_DEBUG);
+  }
 
   render() {
     return (
       <div style={{width: '100%', height: '100%', display: 'flex'}}>
           <div style={mainStyle}>
-            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission}/>
+            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)}/>
           </div>
           <div style={offStyle}>
             <RightPanel local_post_id={this.state.local_post_id} comments={this.comments}/>
