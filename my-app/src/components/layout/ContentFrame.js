@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import arrow_up_grey from '../../img/arrow_up_grey.svg';
+import arrow_up_orange from '../../img/arrow_up_orange.svg';
+import arrow_down_grey from '../../img/arrow_down_grey.svg';
+import arrow_down_blue from '../../img/arrow_down_blue.svg';
 
 export class ContentFrame extends Component {
 
@@ -33,15 +37,18 @@ export class ContentFrame extends Component {
           </div>
           <hr style={lineStyle}/>
           <div id='controls' style={controlsStyle}>
-            {/* downvote, score, upvote */}
-            <span id='upvote' style={upvoteStyle} onClick={this.props.upvote}>
-              up
+            <span id='upvote' style={upvoteStyle} onClick={this.props.upvote} className='upvote'>
+              {/* up */}
+              <img src={this.props.upvote_pressed ? arrow_up_orange : arrow_up_grey} alt='upvote' style={svgStyle}/>
             </span>
+            <hr style={vertLineStyle}/>
             <span id='score' style={scoreStyle}>
               {submission.score}
             </span>
-            <span id='downvote' style={downvoteStyle} onClick={this.props.downvote}>
-              down
+            <hr style={vertLineStyle}/>
+            <span id='downvote' style={downvoteStyle} onClick={this.props.downvote} className='downvote'>
+              {/* down */}
+              <img src={this.props.downvote_pressed ? arrow_down_blue : arrow_down_grey} alt='upvote' style={svgStyle}/>
             </span>
           </div>
         </div>
@@ -139,7 +146,7 @@ const lineStyle = {
 
 const controlsStyle = {
   width: '80%',
-  border: '1px solid',
+  // border: '1px solid',
   height: '10%',
   marginTop: '1.5%',
   display: 'flex',
@@ -148,7 +155,7 @@ const controlsStyle = {
 };
 
 const upvoteStyle = {
-  border: '1px solid',
+  // border: '1px solid',
   width: '10%',
   height: '80%',
   display: 'flex',
@@ -160,7 +167,7 @@ const scoreStyle = {
   width: '10%',
   minWidth: '70px',
   height: '80%',
-  border: '1px solid',
+  // border: '1px solid',
   alignItems: 'center',
   justifyContent: 'center',
   display: 'flex',
@@ -172,13 +179,27 @@ const scoreStyle = {
 const downvoteStyle = {
   width: '10%',
   height: '80%',
-  border: '1px solid',
+  // border: '1px solid',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
 };
 
+const vertLineStyle = {
+  marginLeft: '1px',
+  marginRight: '1px',
+  border: '0.5px solid darkgrey',
+  height: '55%',
+};
+
+const svgStyle = {
+  height: '50%',
+}
+
 export default ContentFrame;
 
 
 // https://stackoverflow.com/questions/35537229/how-to-update-parents-state-in-react
+
+// svg editor
+// https://editor.method.ac/

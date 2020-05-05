@@ -9,6 +9,7 @@ export class Browser extends Component {
   after = 0;
   submissions = [];
   submission = null;
+  submission_raw = null;
   comments = [];
   reddit_credentials = {
     userAgent: 'Lazy Reddit',
@@ -19,8 +20,8 @@ export class Browser extends Component {
   reddit = null;
   _first = true;
   code = null;
-  upvote_DEBUG = false;
-  downvote_DEBUG = false;
+  // upvote_DEBUG = false;
+  // downvote_DEBUG = false;
 
   state = {
     window_width: 0,
@@ -29,6 +30,8 @@ export class Browser extends Component {
     reddit: null,
     local_post_id: 0,
     auth_url: '/',
+    upvote_pressed: false,
+    downvote_pressed: false,
   }
 
   refactor_submission = (sub) => {
@@ -249,6 +252,7 @@ export class Browser extends Component {
 
   update_submission_and_comments = () => {
     this.submission = this.refactor_submission(this.submissions[0]);
+    this.submission_raw = this.submissions[0];
     this.submissions[0].comments.fetchMore({amount: 5, skipReplies: true})
     .then(comments => {
       this.comments = [];
@@ -263,7 +267,7 @@ export class Browser extends Component {
 
   main_loop = () => {
     if (this.submissions.length === 0) {
-      this.reddit.getHot({limit: 5, after: this.after})
+      this.reddit.getHot({limit: 10, after: this.after})
       .then(posts => {
         this.after = posts._query.after;
         posts.forEach(post => {
@@ -299,7 +303,7 @@ export class Browser extends Component {
     const r = new snoowrap(this.reddit_credentials);
     this.reddit = r;
     this.main_loop();
-    this.interval = setInterval(this.main_loop, 5000);
+    this.interval = setInterval(this.main_loop, 50000);
   }
   
   componentWillUnmount() {
@@ -307,20 +311,52 @@ export class Browser extends Component {
   }
 
   upvote() {
-    this.upvote_DEBUG = true;
-    console.log(this.upvote_DEBUG);
+    this.submission_raw.upvote()
+    .catch(error => {
+      if (error.message === '429') {
+        console.log('Too many requests.');
+      }
+    });
+    // this.upvote_pressed = !this.upvote_pressed;
+    if (this.state.downvote_pressed) {
+      this.submission.score = this.submission_raw.score + 1;
+      this.setState({upvote_pressed: !this.state.upvote_pressed, downvote_pressed: !this.state.downvote_pressed});
+    } else {
+      if (this.state.upvote_pressed) {
+        this.submission.score = this.submission_raw.score;
+      } else {
+        this.submission.score = this.submission_raw.score + 1;
+      }
+      this.setState({upvote_pressed: !this.state.upvote_pressed});
+    }
   }
 
   downvote() {
-    this.downvote_DEBUG = true;
-    console.log(this.downvote_DEBUG);
+    this.submission_raw.downvote()
+    .catch(error => {
+      if (error.message === '429') {
+        console.log('Too many requests.');
+      }
+    });
+    // this.downvote_pressed = !this.downvote_pressed;
+    if (this.state.upvote_pressed) {
+      this.submission.score = this.submission_raw.score - 1;
+      this.setState({upvote_pressed: !this.state.upvote_pressed, downvote_pressed: !this.state.downvote_pressed});
+    } else {
+      if (this.state.downvote_pressed) {
+        this.submission.score = this.submission_raw.score;
+      } else {
+        this.submission.score = this.submission_raw.score - 1;
+      }
+      this.setState({downvote_pressed: !this.state.downvote_pressed});      
+    }
   }
 
   render() {
     return (
       <div style={{width: '100%', height: '100%', display: 'flex'}}>
           <div style={mainStyle}>
-            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)}/>
+            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)} upvote_pressed={this.state.upvote_pressed} downvote_pressed={this.state.downvote_pressed}/>
           </div>
           <div style={offStyle}>
             <RightPanel local_post_id={this.state.local_post_id} comments={this.comments}/>

@@ -62,6 +62,14 @@
   top: 5px;
 }
 
+.upvote:hover {
+  cursor: pointer;
+}
+
+.downvote:hover {
+  cursor: pointer;
+}
+
 /* .common {
   background-color: rgb(238, 238, 238);
   width: 100%;
