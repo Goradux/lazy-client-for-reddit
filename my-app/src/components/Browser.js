@@ -261,7 +261,11 @@ export class Browser extends Component {
       });
       this.submissions = this.submissions.slice(1);
       this.log_interesting();
-      this.setState({local_post_id: this.state.local_post_id + 1});
+      this.setState({
+        local_post_id: this.state.local_post_id + 1,
+        upvote_pressed: false,
+        downvote_pressed: false,
+      });
     });
   }
 
@@ -303,7 +307,7 @@ export class Browser extends Component {
     const r = new snoowrap(this.reddit_credentials);
     this.reddit = r;
     this.main_loop();
-    this.interval = setInterval(this.main_loop, 50000);
+    this.interval = setInterval(this.main_loop, 10000);
   }
   
   componentWillUnmount() {

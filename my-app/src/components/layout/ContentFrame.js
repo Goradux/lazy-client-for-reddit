@@ -92,7 +92,7 @@ const titleWrapperStyle = {
   display: 'flex',
   justifyContent: 'left',
   alignItems: 'center',
-  borderRadius: '0px 0px 20px 0px',
+  borderRadius: '0px 0px 20px 20px',
 };
 
 const titleStyle = {
@@ -125,6 +125,7 @@ const mainBackgroundStyle = {
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
+  // border: '1px solid grey',
 };
 
 const contentStyle = {
@@ -203,3 +204,6 @@ export default ContentFrame;
 
 // svg editor
 // https://editor.method.ac/
+
+// add pause play button
+// mb even add a timer?
