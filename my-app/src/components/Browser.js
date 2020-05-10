@@ -241,6 +241,8 @@ export class Browser extends Component {
     console.log(this.submission.url);
     console.log(this.submission.author);
     console.log(this.submission.ups);
+    console.log(this.submission_raw.media);
+    console.log(this.submission_raw.media_embed);
   }
 
   updateDimensions = () => {
@@ -271,6 +273,8 @@ export class Browser extends Component {
 
   main_loop = () => {
     if (this.submissions.length === 0) {
+      // for debugging text content
+      // this.reddit.getSubreddit('jokes').getHot({limit: 10, after: this.after})
       this.reddit.getHot({limit: 10, after: this.after})
       .then(posts => {
         this.after = posts._query.after;

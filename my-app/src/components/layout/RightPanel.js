@@ -137,7 +137,8 @@ const authorStyle = {
 
 const lineStyle = {
   border: '0.5px solid darkgrey',
-  width: '40%',
+  marginLeft: '5%',
+  width: '90%',
   marginTop: '2px',
   marginBottom: '2px',
 };
