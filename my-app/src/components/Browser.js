@@ -307,7 +307,7 @@ export class Browser extends Component {
     const r = new snoowrap(this.reddit_credentials);
     this.reddit = r;
     this.main_loop();
-    this.interval = setInterval(this.main_loop, 10000);
+    this.interval = setInterval(this.main_loop, 5000);
   }
   
   componentWillUnmount() {

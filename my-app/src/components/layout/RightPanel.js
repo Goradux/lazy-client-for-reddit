@@ -78,6 +78,7 @@ const controlsStyle = {
   border: '1px solid',
   marginBottom: '20px',
   borderRadius: '30px',
+  // backgroundColor: 'rgb(255,69,0)',
 };
 
 const commentsLabelStyle = {

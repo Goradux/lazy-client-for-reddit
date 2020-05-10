@@ -6,6 +6,34 @@ import arrow_down_blue from '../../img/arrow_down_blue.svg';
 
 export class ContentFrame extends Component {
 
+  content_type = () => {
+    // cases to consider:
+    // image
+    // hosted:video
+    // rich:video
+    // link
+    // undefined -> just body text (but not always)
+    if (this.props.submission !== null) {
+      switch (this.props.submission.post_hint) {
+        case 'image':
+          return (
+            <span style={{width: '100%', height: '100%'}}>
+              <img style={contentImageStyle} src={this.props.submission.url} alt=''/>
+            </span>
+          )
+        default:
+          return (
+            <span>unsupported content type</span>
+          )
+      }
+    }
+    else {
+      return (
+        <div></div>
+      )
+    }    
+  }
+
   render() {
     // const {url} = this.props.submission;
     if (this.props.submission !== null) {
@@ -33,8 +61,10 @@ export class ContentFrame extends Component {
         
         <div id='main-wrapper' style={mainBackgroundStyle}>
           <div id='content' style={contentStyle}>
-            Content Frame {this.props.local_post_id} {submission.author}
+            {/* Content Frame {this.props.local_post_id} {submission.author} */}
+            {this.content_type()}
           </div>
+
           <hr style={lineStyle}/>
           <div id='controls' style={controlsStyle}>
             <span id='upvote' style={upvoteStyle} onClick={this.props.upvote} className='upvote'>
@@ -130,7 +160,7 @@ const mainBackgroundStyle = {
 
 const contentStyle = {
   width: '80%',
-  border: '1px solid',
+  // border: '1px solid',
   height: '80%',
 };
 
@@ -195,7 +225,19 @@ const vertLineStyle = {
 
 const svgStyle = {
   height: '50%',
-}
+};
+
+const contentImageStyle = {
+  // border: '0.5px solid darkgrey',
+  // boxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  // MozBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  // WebkitBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  // OBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  // MsBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
+  objectFit: 'scale-down',
+  width: '100%',
+  height: '100%',
+};
 
 export default ContentFrame;
 
