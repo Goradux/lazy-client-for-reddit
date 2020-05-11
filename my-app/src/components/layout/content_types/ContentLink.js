@@ -17,7 +17,7 @@ export class ContentLink extends Component {
         <div style={contentStyle} className='fade-animation-fast'>
           {/* an image and a link */}
           <img style={contentImageStyle} src={this.props.preview.images[0].source.url} alt='' className='fade-animation-fast'/>
-          <a href={this.props.url} target="_blank" style={anchorStyle}>Link To The Article</a>
+          <a href={this.props.url} target="_blank" rel="noopener noreferrer" style={anchorStyle}>Link To The Article</a>
         </div>
       )
     }
