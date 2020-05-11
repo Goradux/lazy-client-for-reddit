@@ -23,7 +23,7 @@ export class RightPanel extends Component {
                   {/* <TableItem unit={unit} styles={this.props.styles}/> */}
                   
                   {/* This can be encapsulated into a component: */}
-                  <div style={commentStyle}>
+                  <div style={commentStyle} className='fade-animation-fast'>
                     {/* author name */}
                     <div style={authorScoreWrapperStyle}>
                       <span style={authorStyle}>{comment.author}</span>

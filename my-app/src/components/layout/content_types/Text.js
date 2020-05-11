@@ -7,7 +7,7 @@ export class Text extends Component {
 
   render() {
     return (
-      <div style={textStyle} dangerouslySetInnerHTML={{__html: this.props.selftext_html}}>
+      <div style={textStyle} dangerouslySetInnerHTML={{__html: this.props.selftext_html}} className='fade-animation-fast'>
       </div>
     )
   }

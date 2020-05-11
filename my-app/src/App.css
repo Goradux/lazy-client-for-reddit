@@ -70,6 +70,29 @@
   cursor: pointer;
 }
 
+.fade-animation {
+  opacity: 1;
+  animation: fade 1s linear;
+}
+
+.fade-animation-fast {
+  opacity: 1;
+  animation: fade 0.5s linear;
+}
+
+.fade-animation-fast-header {
+  opacity: 1;
+  animation: fade 0.5s linear;
+  transition: content 2s;
+}
+
+
+
+@keyframes fade {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
+
 /* .common {
   background-color: rgb(238, 238, 238);
   width: 100%;

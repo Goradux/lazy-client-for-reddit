@@ -15,14 +15,18 @@ export class ContentFrame extends Component {
         case 'image':
           return (
             <span style={{width: '100%', height: '100%'}}>
-              <img style={contentImageStyle} src={this.props.submission.url} alt=''/>
+              <React.Fragment key={Math.floor(Math.random() * 100)}>
+                <img style={contentImageStyle} src={this.props.submission.url} alt='' className='fade-animation-fast'/>
+              </React.Fragment>
             </span>
           )
         // text (or empty string)
         case undefined:
           return (
             <span style={{width: '100%', height: '100%'}}>
+              <React.Fragment key={Math.floor(Math.random() * 100)}>
                 <Text selftext_html={this.props.submission.selftext_html}/>
+              </React.Fragment>
             </span>
           )
         // hosted:video
@@ -79,15 +83,12 @@ export class ContentFrame extends Component {
     return (
       <div style={{width: '100%', height: '100%', display: 'inline-block'}}>
         <div id='header-wrapper' style={headerWrapperStyle}>
-          {/* <div id='score' style={scoreStyle}>
-            {submission.score}
-          </div> */}
           <div id='titleWrapper' style={titleWrapperStyle}>
-            <div id='title' style={titleStyle}>
-              {/* Brazil's President Is Out With Another Super-Bad Coronavirus Take: Soccer Players more text */}
-              {/* the length of 1 line */}
-              {submission.title ? submission.title : submission.title}
-            </div>
+            <React.Fragment key={Math.floor(Math.random() * 100)}>
+              <div id='title' style={titleStyle} className='fade-animation-fast'>
+                {submission.title}
+              </div>
+            </React.Fragment>
           </div>
         </div>
         

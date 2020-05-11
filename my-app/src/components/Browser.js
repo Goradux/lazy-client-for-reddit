@@ -388,3 +388,10 @@ const offStyle = {
 }
 
 export default Browser;
+
+
+
+
+// Known bugs:
+// The app should fetch more content not after it sees that the content is empty,
+// but before that instead, so there is no wait.
