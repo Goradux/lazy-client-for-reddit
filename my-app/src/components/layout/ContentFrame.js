@@ -7,6 +7,8 @@ import Text from './content_types/Text';
 import RichVideo from './content_types/RichVideo';
 import HostedVideo from './content_types/HostedVideo';
 import ContentLink from './content_types/ContentLink';
+import svg_play from '../../img/play.svg';
+import svg_pause from '../../img/pause.svg';
 
 export class ContentFrame extends Component {
 
@@ -95,27 +97,49 @@ export class ContentFrame extends Component {
         </div>
         
         <div id='main-wrapper' style={mainBackgroundStyle}>
+
           <div id='content' style={contentStyle}>
             {/* Content Frame {this.props.local_post_id} {submission.author} */}
             {this.content_type()}
           </div>
 
           <hr style={lineStyle}/>
+
           <div id='controls' style={controlsStyle}>
-            <span id='upvote' style={upvoteStyle} onClick={this.props.upvote} className='upvote'>
-              {/* up */}
-              <img src={this.props.upvote_pressed ? arrow_up_orange : arrow_up_grey} alt='upvote' style={svgStyle}/>
-            </span>
-            <hr style={vertLineStyle}/>
-            <span id='score' style={scoreStyle}>
-              {submission.score}
-            </span>
-            <hr style={vertLineStyle}/>
-            <span id='downvote' style={downvoteStyle} onClick={this.props.downvote} className='downvote'>
-              {/* down */}
-              <img src={this.props.downvote_pressed ? arrow_down_blue : arrow_down_grey} alt='upvote' style={svgStyle}/>
-            </span>
+
+            <div id='leftControls' style={controlsLeftStyle}>
+              <span style={subredditStyle}>
+                r/{submission.subreddit}
+              </span>
+              <span style={authorStyle}>
+                By {submission.author} 
+              </span>
+            </div>
+
+            <div id='rightControls' style={controlsRightStyle}>
+              <span id='upvote' style={upvoteStyle} onClick={this.props.upvote} className='upvote'>
+                {/* up */}
+                <img src={this.props.upvote_pressed ? arrow_up_orange : arrow_up_grey} alt='upvote' style={svgStyle}/>
+              </span>
+              <hr style={vertLineStyle}/>
+              <React.Fragment key={Math.floor(Math.random() * 100)}>
+                <span id='score' style={scoreStyle} className='fade-animation-fast'>
+                  {submission.score}
+                </span>
+              </React.Fragment>
+              <hr style={vertLineStyle}/>
+              <span id='downvote' style={downvoteStyle} onClick={this.props.downvote} className='downvote'>
+                {/* down */}
+                <img src={this.props.downvote_pressed ? arrow_down_blue : arrow_down_grey} alt='upvote' style={svgStyle}/>
+              </span>
+              <hr style={vertLineStyle}/>
+              <span id='play_pause' style={playPauseStyle} onClick={this.props.play_pause} className='play-pause'>
+                <img src={this.props.paused ? svg_pause : svg_play} alt='pause/play' style={svgStyle}/>
+              </span>
+            </div>
+
           </div>
+
         </div>
       </div>
     )
@@ -216,6 +240,47 @@ const controlsStyle = {
   height: '10%',
   marginTop: '1.5%',
   display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+};
+
+const controlsLeftStyle = {
+  width: '55%',
+  height: '100%',
+  // border: '1px solid',
+  display: 'flex',
+};
+
+const subredditStyle = {
+  width: '50%',
+  height: '100%',
+  // border: '1px solid',
+  alignItems: 'center',
+  // justifyContent: 'center',
+  display: 'flex',
+  fontSize: '20px',
+  fontWeight: '700',
+  color: 'rgb(51,51,51)',
+};
+
+const authorStyle = {
+  width: '50%',
+  height: '100%',
+  // border: '1px solid',
+  alignItems: 'center',
+  // justifyContent: 'center',
+  display: 'flex',
+  fontSize: '20px',
+  fontWeight: '700',
+  color: 'rgb(51,51,51)',
+};
+
+const controlsRightStyle = {
+  width: '45%',
+  // border: '1px solid',
+  height: '100%',
+  // marginTop: '1.5%',
+  display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
 };
@@ -243,6 +308,15 @@ const scoreStyle = {
 };
 
 const downvoteStyle = {
+  width: '10%',
+  height: '80%',
+  // border: '1px solid',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+const playPauseStyle = {
   width: '10%',
   height: '80%',
   // border: '1px solid',

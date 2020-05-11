@@ -32,6 +32,7 @@ export class Browser extends Component {
     auth_url: '/',
     upvote_pressed: false,
     downvote_pressed: false,
+    paused: false,
   }
 
   refactor_submission = (sub) => {
@@ -238,10 +239,7 @@ export class Browser extends Component {
     //   console.log('✅✅✅');
     // }
     console.log(this.submission.title);
-    // if (this.submission.selftext !== '')
-    //   console.log(this.submission.selftext);
-    // else
-    //   console.log('🛑🛑🛑 no body 🛑🛑🛑');
+    console.log(this.submission.selftext);
     console.log(this.submission.url);
     console.log(this.submission.author);
     console.log(this.submission.ups);
@@ -316,7 +314,7 @@ export class Browser extends Component {
     const r = new snoowrap(this.reddit_credentials);
     this.reddit = r;
     this.main_loop();
-    this.interval = setInterval(this.main_loop, 5000);
+    this.interval = setInterval(this.main_loop, 10000);
   }
   
   componentWillUnmount() {
@@ -365,11 +363,23 @@ export class Browser extends Component {
     }
   }
 
+  play_pause() {
+    if (this.state.paused) {
+      // play
+      this.interval = setInterval(this.main_loop, 10000);
+    } else {
+      // pause
+      clearInterval(this.interval);
+    }
+    this.setState({paused: !this.state.paused});
+
+  }
+
   render() {
     return (
       <div style={{width: '100%', height: '100%', display: 'flex'}}>
           <div style={mainStyle}>
-            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)} upvote_pressed={this.state.upvote_pressed} downvote_pressed={this.state.downvote_pressed}/>
+            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)} upvote_pressed={this.state.upvote_pressed} downvote_pressed={this.state.downvote_pressed} play_pause={this.play_pause.bind(this)} paused={this.state.paused}/>
           </div>
           <div style={offStyle}>
             <RightPanel local_post_id={this.state.local_post_id} comments={this.comments}/>
