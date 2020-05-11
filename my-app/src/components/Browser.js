@@ -101,6 +101,8 @@ export class Browser extends Component {
       // needs support!!!
       //media: {reddit_video: {…}},
       //media_embed: {},
+      media: sub.media,
+      media_embed: sub.media_embed,
       media_only: sub.media_only,
       mod_note: 'not supported',
       mod_reason_by: 'not supported',
@@ -115,11 +117,10 @@ export class Browser extends Component {
       parent_whitelist_status: sub.parent_whitelist_status,
       permalink: sub.permalink,
       pinned: sub.pinned,
-      // POTENTIALLY USEFUL?
-      // post_hint: "hosted:video",
       post_hint: sub.post_hint,
       // ALSO IMPORTANT
       // preview: {images: Array(1), enabled: false},
+      preview: sub.preview,
       pwls: sub.pwls,
       quarantine: sub.quarantine,
       removal_reason: sub.removal_reason,
@@ -233,16 +234,20 @@ export class Browser extends Component {
     console.log('---------------');
     console.log(this.submission.subreddit);
     console.log(this.submission.post_hint);
+    // if (this.submission.post_hint === 'link') {
+    //   console.log('✅✅✅');
+    // }
     console.log(this.submission.title);
-    if (this.submission.selftext !== '')
-      console.log(this.submission.selftext);
-    else
-      console.log('🛑🛑🛑 no body 🛑🛑🛑');
+    // if (this.submission.selftext !== '')
+    //   console.log(this.submission.selftext);
+    // else
+    //   console.log('🛑🛑🛑 no body 🛑🛑🛑');
     console.log(this.submission.url);
     console.log(this.submission.author);
     console.log(this.submission.ups);
-    console.log(this.submission_raw.media);
-    console.log(this.submission_raw.media_embed);
+    // console.log(this.submission.media);
+    // console.log(this.submission.media_embed);
+    // console.log(this.submission.preview);
   }
 
   updateDimensions = () => {
@@ -274,7 +279,7 @@ export class Browser extends Component {
   main_loop = () => {
     if (this.submissions.length === 0) {
       // for debugging text content
-      // this.reddit.getSubreddit('jokes').getHot({limit: 10, after: this.after})
+      // this.reddit.getSubreddit('news').getHot({limit: 10, after: this.after})
       this.reddit.getHot({limit: 10, after: this.after})
       .then(posts => {
         this.after = posts._query.after;

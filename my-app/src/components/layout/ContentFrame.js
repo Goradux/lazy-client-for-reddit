@@ -4,6 +4,9 @@ import arrow_up_orange from '../../img/arrow_up_orange.svg';
 import arrow_down_grey from '../../img/arrow_down_grey.svg';
 import arrow_down_blue from '../../img/arrow_down_blue.svg';
 import Text from './content_types/Text';
+import RichVideo from './content_types/RichVideo';
+import HostedVideo from './content_types/HostedVideo';
+import ContentLink from './content_types/ContentLink';
 
 export class ContentFrame extends Component {
 
@@ -33,33 +36,32 @@ export class ContentFrame extends Component {
         case 'hosted:video':
           return (
             <span style={{width: '100%', height: '100%'}}>
-              hosted video
+              <React.Fragment key={Math.floor(Math.random() * 100)}>
+                <HostedVideo reddit_video={this.props.submission.media.reddit_video}/>
+              </React.Fragment>
             </span>
           )
         // rich:video
         case 'rich:video':
           return (
             <span style={{width: '100%', height: '100%'}}>
-              {/* <div style='position:relative; padding-bottom:calc(125.00% + 44px)'><iframe src='https://gfycat.com/ifr/ChubbyPlainIndianringneckparakeet' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe></div><p> <a href="https://gfycat.com/chubbyplainindianringneckparakeet">via Gfycat</a></p> */}
-              
-              {/* <div style={{position:'relative', paddingBottom: 'calc(69.93% + 44px)'}}><iframe src='https://gfycat.com/ifr/AptAdvancedAldabratortoise' frameBorder='0' scrolling='no' width='100%' height='100%' style={{position:'absolute', top:'0', left:'0', }} allowFullScreen></iframe></div> */}
-
-              {/* <p><a href="https://gfycat.com/discover/sheep-gifs">from Sheep GIFs</a> <a href="https://gfycat.com/aptadvancedaldabratortoise-sheep-animals-lamb">via Gfycat</a></p> */}
-
-              {/* <iframe src={this.props.submission.url} frameBorder='0' scrolling='no' allowFullScreen width='100%' height='100%'></iframe> */}
-              Rich video
+              <React.Fragment key={Math.floor(Math.random() * 100)}>
+                <RichVideo media_embed={this.props.submission.media_embed}/>
+              </React.Fragment>
             </span>
           )
         // link
         case 'link':
           return (
             <span style={{width: '100%', height: '100%'}}>
-              Link
+              <React.Fragment key={Math.floor(Math.random() * 100)}>
+                <ContentLink preview={this.props.submission.preview} url={this.props.submission.url}/>
+              </React.Fragment>
             </span>
           )
         default:
           return (
-            <span>unsupported content type</span>
+            <span> Unsupported content type :( </span>
           )
       }
     }
@@ -283,3 +285,5 @@ export default ContentFrame;
 
 // add pause play button
 // mb even add a timer?
+
+// and of course add NSFW toggle lmao
