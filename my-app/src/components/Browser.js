@@ -271,6 +271,15 @@ export class Browser extends Component {
         upvote_pressed: false,
         downvote_pressed: false,
       });
+    }).catch(error => {
+      // Unable to fetch comments
+      console.log('Unable to fetch comments.');
+      console.log(error);
+      this.setState({
+        local_post_id: this.state.local_post_id + 1,
+        upvote_pressed: false,
+        downvote_pressed: false,
+      });
     });
   }
 
@@ -285,6 +294,10 @@ export class Browser extends Component {
           this.submissions.push(post);
         });
         this.update_submission_and_comments();        
+      }).catch(error => {
+        // to handle
+        console.log('error acquiring posts');
+        console.log(error);
       });
     } else {
       this.update_submission_and_comments();

@@ -4,6 +4,7 @@ import arrow_up_orange from '../../img/arrow_up_orange.svg';
 import arrow_down_grey from '../../img/arrow_down_grey.svg';
 import arrow_down_blue from '../../img/arrow_down_blue.svg';
 import Text from './content_types/Text';
+// import ContentControls from './ContentControls';
 import RichVideo from './content_types/RichVideo';
 import HostedVideo from './content_types/HostedVideo';
 import ContentLink from './content_types/ContentLink';
@@ -20,7 +21,7 @@ export class ContentFrame extends Component {
         case 'image':
           return (
             <span style={{width: '100%', height: '100%'}}>
-              <React.Fragment key={Math.floor(Math.random() * 100)}>
+              <React.Fragment key={this.props.submission.id}>
                 <img style={contentImageStyle} src={this.props.submission.url} alt='' className='fade-animation-fast'/>
               </React.Fragment>
             </span>
@@ -29,7 +30,7 @@ export class ContentFrame extends Component {
         case undefined:
           return (
             <span style={{width: '100%', height: '100%'}}>
-              <React.Fragment key={Math.floor(Math.random() * 100)}>
+              <React.Fragment key={this.props.submission.id}>
                 <Text selftext_html={this.props.submission.selftext_html}/>
               </React.Fragment>
             </span>
@@ -38,7 +39,7 @@ export class ContentFrame extends Component {
         case 'hosted:video':
           return (
             <span style={{width: '100%', height: '100%'}}>
-              <React.Fragment key={Math.floor(Math.random() * 100)}>
+              <React.Fragment key={this.props.submission.id}>
                 <HostedVideo reddit_video={this.props.submission.media.reddit_video}/>
               </React.Fragment>
             </span>
@@ -47,7 +48,7 @@ export class ContentFrame extends Component {
         case 'rich:video':
           return (
             <span style={{width: '100%', height: '100%'}}>
-              <React.Fragment key={Math.floor(Math.random() * 100)}>
+              <React.Fragment key={this.props.submission.id}>
                 <RichVideo media_embed={this.props.submission.media_embed}/>
               </React.Fragment>
             </span>
@@ -56,7 +57,7 @@ export class ContentFrame extends Component {
         case 'link':
           return (
             <span style={{width: '100%', height: '100%'}}>
-              <React.Fragment key={Math.floor(Math.random() * 100)}>
+              <React.Fragment key={this.props.submission.id}>
                 <ContentLink preview={this.props.submission.preview} url={this.props.submission.url}/>
               </React.Fragment>
             </span>
@@ -80,7 +81,7 @@ export class ContentFrame extends Component {
       var submission = this.props.submission;
     } else {
       submission = {
-
+        id: 'empty',
       }
     }
 
@@ -88,7 +89,7 @@ export class ContentFrame extends Component {
       <div style={{width: '100%', height: '100%', display: 'inline-block'}}>
         <div id='header-wrapper' style={headerWrapperStyle}>
           <div id='titleWrapper' style={titleWrapperStyle}>
-            <React.Fragment key={Math.floor(Math.random() * 100)}>
+            <React.Fragment key={submission.id}>
               <div id='title' style={titleStyle} className='fade-animation-fast'>
                 {submission.title}
               </div>
@@ -117,25 +118,26 @@ export class ContentFrame extends Component {
             </div>
 
             <div id='rightControls' style={controlsRightStyle}>
+              {/* <ContentControls upvote={this.props.upvote} downvote={this.props.downvote} play_pause={this.props.play_pause} submission={submission} upvote_pressed={this.props.upvote_pressed} downvote_pressed={this.props.downvote_pressed} paused={this.props.paused}/> */}
+
               <span id='upvote' style={upvoteStyle} onClick={this.props.upvote} className='upvote'>
-                {/* up */}
                 <img src={this.props.upvote_pressed ? arrow_up_orange : arrow_up_grey} alt='upvote' style={svgStyle}/>
               </span>
               <hr style={vertLineStyle}/>
-              <React.Fragment key={Math.floor(Math.random() * 100)}>
+              <React.Fragment key={submission.id}>
                 <span id='score' style={scoreStyle} className='fade-animation-fast'>
                   {submission.score}
                 </span>
               </React.Fragment>
               <hr style={vertLineStyle}/>
               <span id='downvote' style={downvoteStyle} onClick={this.props.downvote} className='downvote'>
-                {/* down */}
                 <img src={this.props.downvote_pressed ? arrow_down_blue : arrow_down_grey} alt='upvote' style={svgStyle}/>
               </span>
               <hr style={vertLineStyle}/>
               <span id='play_pause' style={playPauseStyle} onClick={this.props.play_pause} className='play-pause'>
                 <img src={this.props.paused ? svg_pause : svg_play} alt='pause/play' style={svgStyle}/>
               </span>
+              
             </div>
 
           </div>
