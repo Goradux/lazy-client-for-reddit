@@ -12,7 +12,7 @@ export class RightPanel extends Component {
       <div style={rightPanelStyle}>
         <div style={contentStyle}>
           <div id='controls' style={controlsStyle}>
-
+            {/* To add here: local_id, sort_by, contact_link */}
           </div>
           <p style={commentsLabelStyle}>Comments</p>
           <div id='comments' style={commentsStyle}>
@@ -115,7 +115,7 @@ const commentStyle = {
   OBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.2)",
   MsBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.2)",
   color: 'rgb(51,51,51)',
-  fontSize: '1vw',
+  fontSize: '0.8vw',
 };
 
 const authorScoreWrapperStyle = {

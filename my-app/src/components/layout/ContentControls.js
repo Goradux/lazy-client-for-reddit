@@ -60,7 +60,7 @@ export class ContentControls extends Component {
 
         <hr style={vertLineStyle}/>
         <span id='source' style={sourceStyle} className='source'>
-          <a href={'https://www.reddit.com'.concat(this.props.submission.permalink)} target="_blank" title='Go to this post' style={aStyle}>
+          <a href={'https://www.reddit.com'.concat(this.props.submission.permalink)} target="_blank" rel="noopener noreferrer" title='Go to this post' style={aStyle}>
             <img src={svg_source} alt='source' style={svgStyle}/>
           </a>
         </span>

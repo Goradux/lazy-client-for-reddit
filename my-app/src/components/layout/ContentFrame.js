@@ -25,7 +25,7 @@ export class ContentFrame extends Component {
           return (
             <span style={{width: '100%', height: '100%'}}>
               <React.Fragment key={this.props.submission.id}>
-                <Text selftext_html={this.props.submission.selftext_html}/>
+                <Text selftext_html={this.props.submission.selftext_html} title={this.props.submission.title}/>
               </React.Fragment>
             </span>
           )

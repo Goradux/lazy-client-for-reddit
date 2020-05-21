@@ -286,7 +286,7 @@ export class Browser extends Component {
   main_loop = () => {
     if (this.submissions.length === 0) {
       // for debugging text content
-      // this.reddit.getSubreddit('news').getHot({limit: 10, after: this.after})
+      // this.reddit.getSubreddit('Showerthoughts').getHot({limit: 10, after: this.after})
       this.reddit.getHot({limit: 10, after: this.after})
       .then(posts => {
         this.after = posts._query.after;
@@ -376,25 +376,44 @@ export class Browser extends Component {
     }
   }
 
-  play_pause() {
+  async play_pause() {
     if (this.state.paused) {
       // play
-      this.interval = setInterval(this.main_loop, 10000);
+      //this.interval = setInterval(this.main_loop, 10000);
+      console.log('played');
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+      this.setState({paused: !this.state.paused});
+      await sleep(3000);
+      this.skip();
     } else {
       // pause
+      console.log('paused');
       clearInterval(this.interval);
+      this.setState({paused: !this.state.paused});
     }
-    this.setState({paused: !this.state.paused});
-
   }
 
   return_last() {
     console.log('return_last placeholder');
+
+    // save current as old in the main loop
+
+    
+    // in here:
+
+    // push the current one to the beginning of the waiting list
+    // retrieve the previous one as the current one
+
   }
 
   skip() {
     clearInterval(this.interval);
     this.main_loop();
+    if (this.state.paused === true) {
+      this.setState({paused: !this.state.paused});
+    }
     this.interval = setInterval(this.main_loop, 10000);
   }
 

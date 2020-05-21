@@ -66,20 +66,50 @@
   cursor: pointer;
 }
 
+.upvote:active {
+  position: relative;
+  top: 3px;
+}
+
 .downvote:hover {
   cursor: pointer;
+}
+
+.downvote:active {
+  position: relative;
+  top: 3px;
 }
 
 .play-pause:hover {
   cursor: pointer;
 }
 
+.play-pause:active {
+  position: relative;
+  top: 3px;
+}
+
 .return:hover {
   cursor: pointer;
 }
 
+.return:active {
+  position: relative;
+  top: 3px;
+}
+
 .skip:hover {
   cursor: pointer;
+}
+
+.skip:active {
+  position: relative;
+  top: 3px;
+}
+
+.source:active {
+  position: relative;
+  top: 3px;
 }
 
 /* https://stackoverflow.com/questions/30125705/css-how-to-make-an-element-fade-in-and-then-fade-out */
