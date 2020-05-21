@@ -10,6 +10,10 @@ export class Browser extends Component {
   submissions = [];
   submission = null;
   submission_raw = null;
+  submission_raw_prev = null;
+  submissions_prev = [];
+  prev_index = -1;
+  clicked_return = false;
   comments = [];
   reddit_credentials = {
     userAgent: 'Lazy Reddit',
@@ -256,30 +260,66 @@ export class Browser extends Component {
   }
 
   update_submission_and_comments = () => {
-    this.submission = this.refactor_submission(this.submissions[0]);
-    this.submission_raw = this.submissions[0];
-    this.submissions[0].comments.fetchMore({amount: 5, skipReplies: true})
+    // console.log(this.prev_index);
+    
+    // keep only 10 posts in history
+    if (this.submissions_prev.length > 10) {
+      this.submissions_prev.pop();
+    }
+
+    if (this.prev_index >= 0) {
+      
+      if (!this.clicked_return) {
+        this.prev_index--;
+      }
+      this.clicked_return = false;
+
+      if (this.prev_index === -1) {
+        this.submission = this.refactor_submission(this.submissions[0]);
+        this.submission_raw = this.submissions[0];
+      } else {
+        // eslint-disable-next-line
+        if (this.submissions_prev[this.prev_index] != null || this.submissions_prev[this.prev_index] != undefined) {
+          this.submission = this.refactor_submission(this.submissions_prev[this.prev_index]);
+          this.submission_raw = this.submissions_prev[this.prev_index];
+        } else {
+          return 0;
+        }
+      }
+    } else {
+      this.submissions_prev.unshift(this.submission_raw);
+      this.submission = this.refactor_submission(this.submissions[0]);
+      this.submission_raw = this.submissions[0];
+    }
+    
+    // console.log(this.submission);
+
+    this.submission_raw.comments.fetchMore({amount: 5, skipReplies: true})
     .then(comments => {
       this.comments = [];
       comments.forEach(comment => {
         this.comments.push(this.refactor_comment(comment));
       });
-      this.submissions = this.submissions.slice(1);
+      if (this.prev_index < 0) {
+        this.submissions = this.submissions.slice(1);
+      }
       this.log_interesting();
       this.setState({
-        local_post_id: this.state.local_post_id + 1,
+        local_post_id: this.clicked_return ? this.state.local_post_id - 1 : this.state.local_post_id + 1,
         upvote_pressed: false,
         downvote_pressed: false,
       });
+      this.clicked_return = false;
     }).catch(error => {
       // Unable to fetch comments
       console.log('Unable to fetch comments.');
       console.log(error);
       this.setState({
-        local_post_id: this.state.local_post_id + 1,
+        local_post_id: this.clicked_return ? this.state.local_post_id - 1 : this.state.local_post_id + 1,
         upvote_pressed: false,
         downvote_pressed: false,
       });
+      this.clicked_return = false;
     });
   }
 
@@ -396,16 +436,11 @@ export class Browser extends Component {
   }
 
   return_last() {
-    console.log('return_last placeholder');
-
-    // save current as old in the main loop
-
-    
-    // in here:
-
-    // push the current one to the beginning of the waiting list
-    // retrieve the previous one as the current one
-
+    if (this.prev_index < 0)
+      this.submissions.unshift(this.submission_raw);
+    this.prev_index++;
+    this.clicked_return = true;
+    this.skip();
   }
 
   skip() {
