@@ -83,7 +83,8 @@ const controlsStyle = {
 
 const commentsLabelStyle = {
   textAlign: 'center',
-  fontSize: '24px',
+  // fontSize: '24px',
+  fontSize: '1.25vw',
   color: 'rgb(51,51,51)',
 };
 
@@ -114,7 +115,7 @@ const commentStyle = {
   OBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.2)",
   MsBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.2)",
   color: 'rgb(51,51,51)',
-
+  fontSize: '1vw',
 };
 
 const authorScoreWrapperStyle = {

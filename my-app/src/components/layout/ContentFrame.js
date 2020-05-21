@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import arrow_up_grey from '../../img/arrow_up_grey.svg';
-import arrow_up_orange from '../../img/arrow_up_orange.svg';
-import arrow_down_grey from '../../img/arrow_down_grey.svg';
-import arrow_down_blue from '../../img/arrow_down_blue.svg';
 import Text from './content_types/Text';
-// import ContentControls from './ContentControls';
+import ContentControls from './ContentControls';
 import RichVideo from './content_types/RichVideo';
 import HostedVideo from './content_types/HostedVideo';
 import ContentLink from './content_types/ContentLink';
-import svg_play from '../../img/play.svg';
-import svg_pause from '../../img/pause.svg';
 
 export class ContentFrame extends Component {
 
@@ -118,26 +112,7 @@ export class ContentFrame extends Component {
             </div>
 
             <div id='rightControls' style={controlsRightStyle}>
-              {/* <ContentControls upvote={this.props.upvote} downvote={this.props.downvote} play_pause={this.props.play_pause} submission={submission} upvote_pressed={this.props.upvote_pressed} downvote_pressed={this.props.downvote_pressed} paused={this.props.paused}/> */}
-
-              <span id='upvote' style={upvoteStyle} onClick={this.props.upvote} className='upvote'>
-                <img src={this.props.upvote_pressed ? arrow_up_orange : arrow_up_grey} alt='upvote' style={svgStyle}/>
-              </span>
-              <hr style={vertLineStyle}/>
-              <React.Fragment key={submission.id}>
-                <span id='score' style={scoreStyle} className='fade-animation-fast'>
-                  {submission.score}
-                </span>
-              </React.Fragment>
-              <hr style={vertLineStyle}/>
-              <span id='downvote' style={downvoteStyle} onClick={this.props.downvote} className='downvote'>
-                <img src={this.props.downvote_pressed ? arrow_down_blue : arrow_down_grey} alt='upvote' style={svgStyle}/>
-              </span>
-              <hr style={vertLineStyle}/>
-              <span id='play_pause' style={playPauseStyle} onClick={this.props.play_pause} className='play-pause'>
-                <img src={this.props.paused ? svg_pause : svg_play} alt='pause/play' style={svgStyle}/>
-              </span>
-              
+              <ContentControls upvote={this.props.upvote} downvote={this.props.downvote} play_pause={this.props.play_pause} submission={submission} upvote_pressed={this.props.upvote_pressed} downvote_pressed={this.props.downvote_pressed} paused={this.props.paused} return_last={this.props.return_last} skip={this.props.skip}/>
             </div>
 
           </div>
@@ -160,19 +135,6 @@ const headerWrapperStyle = {
   borderRadius: '0px 0px 20px 20px',
 }
 
-// const scoreStyle = {
-//   height: '100%',
-//   width: '7%',
-//   display: 'flex',
-//   padding: '10px',
-//   color: 'white',
-//   backgroundColor: 'rgb(51,51,51)',
-//   borderRight: '2px solid rgba(255,255,255,0.73)',
-//   borderRadius: '0px 0px 0px 20px',
-//   alignItems: 'center',
-//   justifyContent: 'center',
-// };
-
 const titleWrapperStyle = {
   // width: '93%',
   width: '100%',
@@ -188,7 +150,8 @@ const titleWrapperStyle = {
 
 const titleStyle = {
   color: 'white',
-  fontSize: '30px',
+  // fontSize: '30px',
+  fontSize: '1.5vw',
   justifyContent: 'left',
   // these three are for cutting the long titles with '...'
   overflow: 'hidden',
@@ -260,7 +223,8 @@ const subredditStyle = {
   alignItems: 'center',
   // justifyContent: 'center',
   display: 'flex',
-  fontSize: '20px',
+  // fontSize: '20px',
+  fontSize: '1.1vw',
   fontWeight: '700',
   color: 'rgb(51,51,51)',
 };
@@ -272,7 +236,8 @@ const authorStyle = {
   alignItems: 'center',
   // justifyContent: 'center',
   display: 'flex',
-  fontSize: '20px',
+  // fontSize: '20px',
+  fontSize: '1.1vw',
   fontWeight: '700',
   color: 'rgb(51,51,51)',
 };
@@ -287,57 +252,6 @@ const controlsRightStyle = {
   alignItems: 'center',
 };
 
-const upvoteStyle = {
-  // border: '1px solid',
-  width: '10%',
-  height: '80%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-};
-
-const scoreStyle = {
-  width: '10%',
-  minWidth: '70px',
-  height: '80%',
-  // border: '1px solid',
-  alignItems: 'center',
-  justifyContent: 'center',
-  display: 'flex',
-  fontSize: '20px',
-  fontWeight: '700',
-  color: 'rgb(51,51,51)',
-};
-
-const downvoteStyle = {
-  width: '10%',
-  height: '80%',
-  // border: '1px solid',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-};
-
-const playPauseStyle = {
-  width: '10%',
-  height: '80%',
-  // border: '1px solid',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-};
-
-const vertLineStyle = {
-  marginLeft: '1px',
-  marginRight: '1px',
-  border: '0.5px solid darkgrey',
-  height: '55%',
-};
-
-const svgStyle = {
-  height: '50%',
-};
-
 const contentImageStyle = {
   // border: '0.5px solid darkgrey',
   // boxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
@@ -345,7 +259,8 @@ const contentImageStyle = {
   // WebkitBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
   // OBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
   // MsBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.1)",
-  objectFit: 'scale-down',
+  // objectFit: 'scale-down',
+  objectFit: 'contain',
   width: '100%',
   height: '100%',
 };

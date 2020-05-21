@@ -388,11 +388,21 @@ export class Browser extends Component {
 
   }
 
+  return_last() {
+    console.log('return_last placeholder');
+  }
+
+  skip() {
+    clearInterval(this.interval);
+    this.main_loop();
+    this.interval = setInterval(this.main_loop, 10000);
+  }
+
   render() {
     return (
       <div style={{width: '100%', height: '100%', display: 'flex'}}>
           <div style={mainStyle}>
-            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)} upvote_pressed={this.state.upvote_pressed} downvote_pressed={this.state.downvote_pressed} play_pause={this.play_pause.bind(this)} paused={this.state.paused}/>
+            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)} upvote_pressed={this.state.upvote_pressed} downvote_pressed={this.state.downvote_pressed} play_pause={this.play_pause.bind(this)} paused={this.state.paused} return_last={this.return_last.bind(this)} skip={this.skip.bind(this)}/>
           </div>
           <div style={offStyle}>
             <RightPanel local_post_id={this.state.local_post_id} comments={this.comments}/>
