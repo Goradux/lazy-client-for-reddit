@@ -274,6 +274,7 @@ export class Browser extends Component {
       }
       this.clicked_return = false;
 
+      // if prev_index == -1, we have gone thru the history and reached the new posts again
       if (this.prev_index === -1) {
         this.submission = this.refactor_submission(this.submissions[0]);
         this.submission_raw = this.submissions[0];

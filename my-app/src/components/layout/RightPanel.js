@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import RightControls from './RightControls';
+
 export class RightPanel extends Component {
 
   get_time() {
@@ -13,6 +15,7 @@ export class RightPanel extends Component {
         <div style={contentStyle}>
           <div id='controls' style={controlsStyle}>
             {/* To add here: local_id, sort_by, contact_link */}
+            <RightControls local_post_id={this.props.local_post_id}/>
           </div>
           <p style={commentsLabelStyle}>Comments</p>
           <div id='comments' style={commentsStyle}>
