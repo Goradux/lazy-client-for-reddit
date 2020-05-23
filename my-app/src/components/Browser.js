@@ -464,6 +464,15 @@ export class Browser extends Component {
     this.interval = setInterval(this.main_loop, 10000);
   }
 
+  sort_by(arg) {
+    console.log('sort by placeholder');
+    console.log(arg);
+  }
+
+  jump_to(arg) {
+    console.log('jump to placeholder');
+  }
+
   render() {
     return (
       <div style={{width: '100%', height: '100%', display: 'flex'}}>
@@ -471,7 +480,7 @@ export class Browser extends Component {
             <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)} upvote_pressed={this.state.upvote_pressed} downvote_pressed={this.state.downvote_pressed} play_pause={this.play_pause.bind(this)} paused={this.state.paused} return_last={this.return_last.bind(this)} skip={this.skip.bind(this)}/>
           </div>
           <div style={offStyle}>
-            <RightPanel local_post_id={this.state.local_post_id} comments={this.comments}/>
+            <RightPanel local_post_id={this.state.local_post_id} comments={this.comments} sort_by={this.sort_by.bind(this)} jump_to={this.jump_to.bind(this)}/>
           </div>
       </div>
     )
