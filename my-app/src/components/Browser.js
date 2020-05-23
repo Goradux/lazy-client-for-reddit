@@ -25,6 +25,7 @@ export class Browser extends Component {
   _first = true;
   code = null;
   reached_history_end = false;
+  advancing_history = false;
   // upvote_DEBUG = false;
   // downvote_DEBUG = false;
 
@@ -262,7 +263,11 @@ export class Browser extends Component {
 
   update_local_post_id = () => {
     if (!this.reached_history_end) {
-      return this.prev_index > 0 ? this.state.local_post_id - 1 : this.state.local_post_id + 1;
+      if (this.advancing_history) {
+        return this.state.local_post_id + 1;
+      } else {
+        return this.prev_index > 0 ? this.state.local_post_id - 1 : this.state.local_post_id + 1;
+      }
     } else {
       return this.state.local_post_id;
     }
@@ -285,15 +290,18 @@ export class Browser extends Component {
       }
       this.submission = this.refactor_submission(this.submission_raw);
       this.clicked_return = false;
+      this.advancing_history = false;
     } else {
       this.prev_index--;
       if (this.prev_index >= 0) {
         this.submission_raw = this.submissions_prev[this.prev_index];
         this.submission = this.refactor_submission(this.submission_raw);
+        this.advancing_history = true;
       } else {
         this.submission_raw = this.submissions.shift();
         this.submissions_prev.unshift(this.submission_raw);
         this.submission = this.refactor_submission(this.submission_raw);
+        this.advancing_history = false;
       }
       this.reached_history_end = false;
       if (this.prev_index < 0) {
