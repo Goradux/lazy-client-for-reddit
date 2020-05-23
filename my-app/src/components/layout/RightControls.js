@@ -41,8 +41,8 @@ export class RightControls extends Component {
             {/* https://reactjs.org/docs/forms.html */}
             <form>
               <select value={this.state.value} onChange={this.change_sort} style={selectStyle}>
-                <option value="best">Best</option>
                 <option value="hot">Hot</option>
+                <option value="best">Best</option>
                 <option value="new">New</option>
                 <option value="top">Top</option>
                 <option value="rising">Rising</option>
@@ -53,7 +53,8 @@ export class RightControls extends Component {
           <hr style={vertLineStyle}/>
 
           <span>
-            ID: {this.props.local_post_id}
+            ID: 
+            <p style={{fontWeight: 'bold', display:'inline-block', paddingLeft: '5px'}}>{this.props.local_post_id}</p>
           </span>
 
           <hr style={vertLineStyle}/>

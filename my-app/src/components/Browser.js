@@ -5,7 +5,9 @@ import RightPanel from './layout/RightPanel';
 
 export class Browser extends Component {
 
-  display_options = ['hot', 'top', 'new', 'rising'];
+  // sort_options = ['best', 'hot', 'new', 'top', 'rising'];
+  sort_options = {};
+  current_sort = 'hot';
   after = 0;
   submissions = [];
   submission = null;
@@ -342,7 +344,8 @@ export class Browser extends Component {
     if (this.submissions.length === 0) {
       // for debugging text content
       // this.reddit.getSubreddit('Showerthoughts').getHot({limit: 10, after: this.after})
-      this.reddit.getHot({limit: 10, after: this.after})
+      // this.reddit.getHot({limit: 10, after: this.after})
+      this.sort_options[this.current_sort]({limit: 10, after: this.after})
       .then(posts => {
         this.after = posts._query.after;
         posts.forEach(post => {
@@ -353,6 +356,10 @@ export class Browser extends Component {
         // to handle
         console.log('error acquiring posts');
         console.log(error);
+        // new and rising have problems fetching posts sometimes
+        if (this.current_sort === 'new' || this.current_sort === 'rising') {
+          this.skip();
+        }
       });
     } else {
       this.update_submission_and_comments();
@@ -381,6 +388,13 @@ export class Browser extends Component {
     // for CSS purposes 
     const r = new snoowrap(this.reddit_credentials);
     this.reddit = r;
+    this.sort_options = {
+      best: this.reddit.getBest.bind(this.reddit),
+      hot: this.reddit.getHot.bind(this.reddit),
+      new: this.reddit.getNew.bind(this.reddit),
+      top: this.reddit.getTop.bind(this.reddit),
+      rising: this.reddit.getRising.bind(this.reddit),
+    };
     this.main_loop();
     this.interval = setInterval(this.main_loop, 10000);
   }
@@ -465,12 +479,27 @@ export class Browser extends Component {
   }
 
   sort_by(arg) {
-    console.log('sort by placeholder');
-    console.log(arg);
+    // console.log('sort by placeholder');
+    // console.log(arg);
+    this.current_sort = arg;
+    this.submissions = [];
+    this.submission = null;
+    this.submission_raw = null;
+    this.submission_raw_prev = null;
+    this.submissions_prev = [];
+    this.prev_index = 0;
+    this.clicked_return = false;
+    this.comments = [];    
+    this.reached_history_end = false;
+    this.advancing_history = false;
+    this.setState({local_post_id: 0});
+    
+    this.skip();
   }
 
   jump_to(arg) {
     console.log('jump to placeholder');
+    console.log(arg);
   }
 
   render() {
