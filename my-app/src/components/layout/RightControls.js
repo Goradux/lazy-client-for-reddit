@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 // import Dropdown from 'react-dropdown';
 // import 'react-dropdown/style.css';
+import github_mark from '../../img/GitHub-Mark-120px-plus.png';
 
 export class RightControls extends Component {
 
@@ -74,9 +75,11 @@ export class RightControls extends Component {
 
           <hr style={vertLineStyle}/>
 
-          <span>
+          <span style={{height: '70%'}}>
             {/* my link */}
-            <a href="https://www.github.com/Goradux" target="_blank" rel="noopener noreferrer" title='Check my GitHub :)'>Me</a>
+            <a href="https://www.github.com/Goradux" target="_blank" rel="noopener noreferrer" title='Check my GitHub :)'>
+              <img src={github_mark} alt="My GitHub" style={githubStyle}/>
+            </a>
           </span>
 
       </div>
@@ -124,6 +127,12 @@ const vertLineStyle = {
   marginRight: '1px',
   border: '0.5px solid darkgrey',
   height: '55%',
+};
+
+const githubStyle = {
+  objectFit: 'contain',
+  width: '100%',
+  height: '100%',
 };
 
 export default RightControls;

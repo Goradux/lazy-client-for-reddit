@@ -112,7 +112,7 @@ export class ContentFrame extends Component {
             </div>
 
             <div id='rightControls' style={controlsRightStyle}>
-              <ContentControls upvote={this.props.upvote} downvote={this.props.downvote} play_pause={this.props.play_pause} submission={submission} upvote_pressed={this.props.upvote_pressed} downvote_pressed={this.props.downvote_pressed} paused={this.props.paused} return_last={this.props.return_last} skip={this.props.skip}/>
+              <ContentControls upvote={this.props.upvote} downvote={this.props.downvote} play_pause={this.props.play_pause} submission={submission} upvote_pressed={this.props.upvote_pressed} downvote_pressed={this.props.downvote_pressed} paused={this.props.paused} return_last={this.props.return_last} skip={this.props.skip} skip_batch={this.props.skip_batch} batch={this.props.batch}/>
             </div>
 
           </div>
@@ -210,7 +210,7 @@ const controlsStyle = {
 };
 
 const controlsLeftStyle = {
-  width: '55%',
+  width: '50%',
   height: '100%',
   // border: '1px solid',
   display: 'flex',
@@ -243,7 +243,7 @@ const authorStyle = {
 };
 
 const controlsRightStyle = {
-  width: '45%',
+  width: '50%',
   // border: '1px solid',
   height: '100%',
   // marginTop: '1.5%',

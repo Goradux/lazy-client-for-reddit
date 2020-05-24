@@ -6,6 +6,7 @@ import RightPanel from './layout/RightPanel';
 export class Browser extends Component {
 
   // sort_options = ['best', 'hot', 'new', 'top', 'rising'];
+  batch = 100;
   sort_options = {};
   current_sort = 'hot';
   after = 0;
@@ -345,7 +346,7 @@ export class Browser extends Component {
       // for debugging text content
       // this.reddit.getSubreddit('Showerthoughts').getHot({limit: 10, after: this.after})
       // this.reddit.getHot({limit: 10, after: this.after})
-      this.sort_options[this.current_sort]({limit: 10, after: this.after})
+      this.sort_options[this.current_sort]({limit: this.batch, after: this.after})
       .then(posts => {
         this.after = posts._query.after;
         posts.forEach(post => {
@@ -478,6 +479,22 @@ export class Browser extends Component {
     this.interval = setInterval(this.main_loop, 10000);
   }
 
+  skip_batch() {
+    console.log(`skip ${this.batch} placeholder`);
+    this.submissions = [];
+    this.submission = null;
+    this.submission_raw = null;
+    this.submission_raw_prev = null;
+    this.submissions_prev = [];
+    this.prev_index = 0;
+    this.clicked_return = false;
+    this.comments = [];
+    this.reached_history_end = false;
+    this.advancing_history = false;
+    this.setState({local_post_id: this.state.local_post_id + this.batch - 1});
+    this.skip();
+  }
+
   sort_by(arg) {
     // console.log('sort by placeholder');
     // console.log(arg);
@@ -533,7 +550,7 @@ export class Browser extends Component {
     return (
       <div style={{width: '100%', height: '100%', display: 'flex'}}>
           <div style={mainStyle}>
-            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)} upvote_pressed={this.state.upvote_pressed} downvote_pressed={this.state.downvote_pressed} play_pause={this.play_pause.bind(this)} paused={this.state.paused} return_last={this.return_last.bind(this)} skip={this.skip.bind(this)}/>
+            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)} upvote_pressed={this.state.upvote_pressed} downvote_pressed={this.state.downvote_pressed} play_pause={this.play_pause.bind(this)} paused={this.state.paused} return_last={this.return_last.bind(this)} skip={this.skip.bind(this)} skip_batch={this.skip_batch.bind(this)} batch={this.batch}/>
           </div>
           <div style={offStyle}>
             <RightPanel local_post_id={this.state.local_post_id} comments={this.comments} sort_by={this.sort_by.bind(this)} jump_to={this.jump_to.bind(this)}/>

@@ -7,11 +7,15 @@ import arrow_down_blue from '../../img/arrow_down_blue.svg';
 import svg_play from '../../img/play.svg';
 import svg_pause from '../../img/pause.svg';
 import svg_skip from '../../img/skip.svg';
+import svg_skip_batch from '../../img/skip_batch.svg';
 import svg_return from '../../img/return.svg';
 import svg_source from  '../../img/source.svg';
 
 export class ContentControls extends Component {
   
+  get_batch_size = () => {
+    return `Skip ${this.props.batch} posts`;
+  }
   
   render() {
     return (
@@ -55,6 +59,13 @@ export class ContentControls extends Component {
         <span id='skip' style={skipStyle} onClick={this.props.skip} className='skip'>
           <a href="#a" title='Skip this post' style={aStyle}>
             <img src={svg_skip} alt='skip' style={svgStyle}/>
+          </a>
+        </span>
+
+        <hr style={vertLineStyle}/>
+        <span id='skip100' style={skipStyle} onClick={this.props.skip_batch} className='skip'>
+          <a href="#a" title={this.get_batch_size()} style={aStyle}>
+            <img src={svg_skip_batch} alt={this.get_batch_size()} style={svgStyle}/>
           </a>
         </span>
 
