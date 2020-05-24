@@ -241,16 +241,16 @@ export class Browser extends Component {
 
   log_interesting = () => {
     console.log('---------------');
-    // console.log(this.submission.subreddit);
-    // console.log(this.submission.post_hint);
+    console.log(this.submission.subreddit);
+    console.log(this.submission.post_hint);
     // if (this.submission.post_hint === 'link') {
     //   console.log('✅✅✅');
     // }
-    // console.log(this.submission.title);
-    // console.log(this.submission.selftext);
-    // console.log(this.submission.url);
-    // console.log(this.submission.author);
-    // console.log(this.submission.ups);
+    console.log(this.submission.title);
+    console.log(this.submission.selftext);
+    console.log(this.submission.url);
+    console.log(this.submission.author);
+    console.log(this.submission.ups);
     // console.log(this.submission.media);
     // console.log(this.submission.media_embed);
     // console.log(this.submission.preview);
@@ -347,7 +347,6 @@ export class Browser extends Component {
       // this.reddit.getHot({limit: 10, after: this.after})
       this.sort_options[this.current_sort]({limit: 10, after: this.after})
       .then(posts => {
-        console.log(posts);
         this.after = posts._query.after;
         posts.forEach(post => {
           this.submissions.push(post);
@@ -498,36 +497,9 @@ export class Browser extends Component {
     this.skip();
   }
 
-  jump_to(index) {
+  jump_to(arg) {
     console.log('jump to placeholder');
-    // console.log(index);
-
-    // console.log(this.after);
-    //   this.after = arg;
-    //   this.skip();
-
-    // fetch x amount of posts, get the id, reset, skip
-    // this.sort_options[this.current_sort]({limit: index, after: 0, count: 9999})
-    // this.sort_options[this.current_sort]({limit: index})
-    // .then(posts => {
-    //   console.log(posts);
-    //   this.after = posts._query.after;   
-    // }).catch(error => {
-    //   console.log('error acquiring posts');
-    //   console.log(error);
-    // });
-    // this.submissions = [];
-    // this.submission = null;
-    // this.submission_raw = null;
-    // this.submission_raw_prev = null;
-    // this.submissions_prev = [];
-    // this.prev_index = 0;
-    // this.clicked_return = false;
-    // this.comments = [];    
-    // this.reached_history_end = false;
-    // this.advancing_history = false;
-    // this.setState({local_post_id: 0 + index});
-    // this.skip();
+    console.log(arg);
   }
 
   render() {
