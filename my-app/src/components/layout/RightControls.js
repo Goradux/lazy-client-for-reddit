@@ -7,7 +7,7 @@ export class RightControls extends Component {
 
   state = {
     sort: 'hot',
-    jump_id: 0,
+    jump_id: 1,
   };
 
   change_sort = (event) => {
@@ -57,7 +57,7 @@ export class RightControls extends Component {
             <p style={{fontWeight: 'bold', display:'inline-block', paddingLeft: '5px'}}>{this.props.local_post_id}</p>
           </span>
 
-          <hr style={vertLineStyle}/>
+          {/* <hr style={vertLineStyle}/>
 
           <span style={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
             <span>
@@ -70,7 +70,7 @@ export class RightControls extends Component {
                 <input type="submit" style={goStyle} value="Go"/>
               </form>
             </span>
-          </span>
+          </span> */}
 
           <hr style={vertLineStyle}/>
 
@@ -106,19 +106,18 @@ const selectStyle = {
   MsBoxShadow: "0 5px 10px 0px rgba(0, 0, 0, 0.2)",
 };
 
-const inputStyle = {
-  width: '50px',
-  marginLeft: '10px',
-  fontSize: '0.8vw',
-  paddingLeft: '5px',
-  fontWeight: 'bold',
-};
+// const inputStyle = {
+//   width: '50px',
+//   marginLeft: '10px',
+//   fontSize: '0.8vw',
+//   paddingLeft: '5px',
+//   fontWeight: 'bold',
+// };
 
-const goStyle = {
-  marginLeft: '5px',
-  // borderRadius: 'px',
-  fontSize: '0.8vw',
-};
+// const goStyle = {
+//   marginLeft: '5px',
+//   fontSize: '0.8vw',
+// };
 
 const vertLineStyle = {
   marginLeft: '1px',
