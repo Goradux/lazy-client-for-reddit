@@ -9,6 +9,7 @@ export class RightControls extends Component {
   state = {
     sort: 'hot',
     jump_id: 1,
+    nsfw: 'NSFW off',
   };
 
   change_sort = (event) => {
@@ -34,6 +35,18 @@ export class RightControls extends Component {
     }
   }
 
+  nsfwStyle = () => {
+    return {
+      fontWeight: 'bold',
+      color: this.state.nsfw === 'NSFW on' ? 'red' : 'black',
+    }
+  }
+
+  change_nsfw = () => {
+    this.setState({nsfw: this.state.nsfw === 'NSFW on' ? 'NSWF off' : 'NSFW on'});
+    this.props.change_nsfw();
+  }
+
   render() {
     return (
       <div style={componentStyle}>
@@ -56,6 +69,12 @@ export class RightControls extends Component {
           <span>
             ID: 
             <p style={{fontWeight: 'bold', display:'inline-block', paddingLeft: '5px'}}>{this.props.local_post_id}</p>
+          </span>
+
+          <hr style={vertLineStyle}/>
+
+          <span>
+            <p style={this.nsfwStyle()} onClick={this.change_nsfw} className='hoverable'>{this.state.nsfw}</p>
           </span>
 
           {/* <hr style={vertLineStyle}/>
@@ -128,6 +147,10 @@ const vertLineStyle = {
   border: '0.5px solid darkgrey',
   height: '55%',
 };
+
+// const nsfwStyle = {
+//   fontWeight: 'bold',
+// };
 
 const githubStyle = {
   objectFit: 'contain',

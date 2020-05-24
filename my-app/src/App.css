@@ -112,6 +112,10 @@
   top: 3px;
 }
 
+.hoverable:hover {
+  cursor: pointer;
+}
+
 /* https://stackoverflow.com/questions/30125705/css-how-to-make-an-element-fade-in-and-then-fade-out */
 .fade-animation {
   opacity: 1;

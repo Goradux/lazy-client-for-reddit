@@ -21,6 +21,7 @@ export class ContentFrame extends Component {
             </span>
           )
         // text (or empty string)
+        case 'self':
         case undefined:
           return (
             <span style={{width: '100%', height: '100%'}}>

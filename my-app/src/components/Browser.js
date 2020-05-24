@@ -29,6 +29,7 @@ export class Browser extends Component {
   code = null;
   reached_history_end = false;
   advancing_history = false;
+  nsfw = false;
   // upvote_DEBUG = false;
   // downvote_DEBUG = false;
 
@@ -313,38 +314,44 @@ export class Browser extends Component {
     }
     
     // console.log(this.submission);
-    
 
-    this.submission_raw.comments.fetchMore({amount: 5, skipReplies: true})
-    .then(comments => {
-      this.comments = [];
-      comments.forEach(comment => {
-        this.comments.push(this.refactor_comment(comment));
+    if ((this.submission.over_18 && this.nsfw) || !this.submission.over_18) {
+      this.submission_raw.comments.fetchMore({amount: 5, skipReplies: true})
+      .then(comments => {
+        this.comments = [];
+        comments.forEach(comment => {
+          this.comments.push(this.refactor_comment(comment));
+        });
+        this.log_interesting();
+        this.setState({
+          local_post_id: this.update_local_post_id(),
+          upvote_pressed: false,
+          downvote_pressed: false,
+        });
+        this.clicked_return = false;
+      }).catch(error => {
+        // Unable to fetch comments
+        console.log('Unable to fetch comments.');
+        console.log(error);
+        this.setState({
+          local_post_id: this.update_local_post_id(),
+          upvote_pressed: false,
+          downvote_pressed: false,
+        });
+        this.clicked_return = false;
       });
-      this.log_interesting();
-      this.setState({
-        local_post_id: this.update_local_post_id(),
-        upvote_pressed: false,
-        downvote_pressed: false,
-      });
-      this.clicked_return = false;
-    }).catch(error => {
-      // Unable to fetch comments
-      console.log('Unable to fetch comments.');
-      console.log(error);
-      this.setState({
-        local_post_id: this.update_local_post_id(),
-        upvote_pressed: false,
-        downvote_pressed: false,
-      });
-      this.clicked_return = false;
-    });
+    } else {
+      setTimeout(() => {
+        // console.log('waited 700 ms before skipping');
+        this.skip();
+      }, 700);
+    }
   }
 
   main_loop = () => {
     if (this.submissions.length === 0) {
-      // for debugging text content
-      // this.reddit.getSubreddit('Showerthoughts').getHot({limit: 10, after: this.after})
+      // for debugging nsfw
+      // this.reddit.getSubreddit('fiftyfifty').getHot({limit: 10, after: this.after})
       // this.reddit.getHot({limit: 10, after: this.after})
       this.sort_options[this.current_sort]({limit: this.batch, after: this.after})
       .then(posts => {
@@ -546,6 +553,10 @@ export class Browser extends Component {
     // this.skip();
   }
 
+  change_nsfw() {
+    this.nsfw = !this.nsfw;
+  }
+
   render() {
     return (
       <div style={{width: '100%', height: '100%', display: 'flex'}}>
@@ -553,7 +564,7 @@ export class Browser extends Component {
             <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)} upvote_pressed={this.state.upvote_pressed} downvote_pressed={this.state.downvote_pressed} play_pause={this.play_pause.bind(this)} paused={this.state.paused} return_last={this.return_last.bind(this)} skip={this.skip.bind(this)} skip_batch={this.skip_batch.bind(this)} batch={this.batch}/>
           </div>
           <div style={offStyle}>
-            <RightPanel local_post_id={this.state.local_post_id} comments={this.comments} sort_by={this.sort_by.bind(this)} jump_to={this.jump_to.bind(this)}/>
+            <RightPanel local_post_id={this.state.local_post_id} comments={this.comments} sort_by={this.sort_by.bind(this)} jump_to={this.jump_to.bind(this)} change_nsfw={this.change_nsfw.bind(this)}/>
           </div>
       </div>
     )

@@ -15,7 +15,7 @@ export class RightPanel extends Component {
         <div style={contentStyle}>
           <div id='controls' style={controlsStyle}>
             {/* To add here: local_id, sort_by, contact_link */}
-            <RightControls local_post_id={this.props.local_post_id} sort_by={this.props.sort_by} jump_to={this.props.jump_to}/>
+            <RightControls local_post_id={this.props.local_post_id} sort_by={this.props.sort_by} jump_to={this.props.jump_to} change_nsfw={this.props.change_nsfw}/>
           </div>
           <p style={commentsLabelStyle}>Comments</p>
           <div id='comments' style={commentsStyle}>
