@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import snoowrap from 'snoowrap';
 import Browser from './components/Browser';
+import NavBar from './components/NavBar';
 
 // https://reacttraining.com/react-router/web/guides/quick-start
 import {
@@ -29,7 +30,8 @@ class App extends Component {
       const auth_url = snoowrap.getAuthUrl({
         clientId: process.env.REACT_APP_CLIENT_ID,                // client ID
         clientSecret: process.env.REACT_APP_CLIENT_SECRET,        // client secret
-        scope: ['identity', 'mysubreddits', 'read', 'report', 'submit', 'vote', 'subscribe'],
+        // scope: ['identity', 'mysubreddits', 'read', 'report', 'submit', 'vote', 'subscribe'],
+        scope: ['mysubreddits', 'read', 'vote'],
         redirectUri: 'http://localhost:3000/browse/',
         permanent: true,
         state: state,
@@ -51,7 +53,7 @@ class App extends Component {
     this.setState({window_width, window_height});
   }
 
-  commonStyle = () => {
+  globalStyle = () => {
     return {
       backgroundColor: 'rgb(238,238,238)',
       width:  this.state.window_width.toString().concat('px'),
@@ -69,70 +71,53 @@ class App extends Component {
     // console.log(this.state.local_post_id);
 
     return (
-      // <div id='main' style={this.commonStyle()}>
         <Router>
-          {/* <div className="App"> */}
-            {/* <header className="App-header">
-              <img src={logo} className="App-logo" alt="logo" />
-              <p>
-                Edit <code>src/App.js</code> and save to reload.
-              </p>
-              <a
-                className="App-link"
-                href="https://reactjs.org"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Learn React
-              </a>
-            </header> */}
-
-
-
-          {/* </div> */}
           <Switch>
             <Route path='/browse'>
-              <div id='browse' style={this.commonStyle()}>
+              <div id='browse' style={this.globalStyle()}>
                 <Browser/>
               </div>
             </Route>
-            <Route path='/'>
-              {/* <div className="App"> */}
-              <div id='custom-root' style={this.commonStyle()}>
-                <div id='login-box' style={loginBox}>
-                  {/* <div style={topBar}>
-                    <div style={headerStyle}>Lazy Client for Reddit</div>
-                  </div> */}
-                  <span id='upper-header' style={upperHeaderStyle}>Lazy Client</span>
-                  {/* <span>Lazy Client</span> */}
-                  <span id='lower-header' style={lowerHeaderStyle}>for Reddit</span>
-                  <span id='text' style={textStyle}>Too lazy to scroll through your posts yourself? Say no more!</span>
-                  <div id='button-box' style={buttonBox}>
-                    <a
-                      className="login-button"
-                      href={this.state.auth_url}
-                      target="_self"
-                      // rel="noopener noreferrer"
-                    >
-                      Login via Reddit
-                    </a>
 
-                    <a
-                      style={{marginTop: '20px'}}
-                      className="login-button2"
-                      href='/browse?userless=true'
-                      target="_self"
-                      // rel="noopener noreferrer"
-                    >
-                      Proceed without login
-                    </a>
+            <Route path='/'>
+              <div id='custom-root' style={this.globalStyle()}>
+                <div  style={mainWrapperStyle}>
+                  <NavBar/>
+                  <div style={loginWrapperStyle}>
+                    <div id='login-box' style={loginBox}>
+                      {/* <div style={topBar}>
+                        <div style={headerStyle}>Lazy Client for Reddit</div>
+                      </div> */}
+                      <span id='upper-header' style={upperHeaderStyle}>Lazy Client</span>
+                      <span id='lower-header' style={lowerHeaderStyle}>for Reddit</span>
+                      <span id='text' style={textStyle}>Too lazy to scroll through your posts yourself? Say no more!</span>
+                      <div id='button-box' style={buttonBox}>
+                        <a
+                          className="login-button"
+                          href={this.state.auth_url}
+                          target="_self"
+                          // rel="noopener noreferrer"
+                        >
+                          Login via Reddit
+                        </a>
+
+                        <a
+                          style={{marginTop: '20px'}}
+                          className="login-button2"
+                          href='/browse?userless=true'
+                          target="_self"
+                          // rel="noopener noreferrer"
+                        >
+                          Proceed without login
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </Route>
           </Switch>
         </Router>
-      // </div>
     );
   }
 }
@@ -188,6 +173,20 @@ const lowerHeaderStyle = {
 const textStyle = {
   textAlign: 'center',
 }
+
+const mainWrapperStyle = {
+  display: 'block',
+  height: '100%',
+  width: '100%',
+};
+
+const loginWrapperStyle = {
+  width: '100%',
+  height: '95%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
 
 export default App;
 

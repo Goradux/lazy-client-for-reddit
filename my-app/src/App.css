@@ -78,12 +78,20 @@
 }
 
 .login-button2:hover {
-  background-color: rgb(30,30,30);
+  background-color: black;
   cursor: pointer;
 }
 
 .login-button2:active {
   top: 5px;
+}
+
+.faq-button {
+  transition: filter 300ms;
+}
+
+.faq-button:hover {
+  filter: brightness(1.2);
 }
 
 .upvote:hover {
