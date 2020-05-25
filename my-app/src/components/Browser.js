@@ -30,6 +30,7 @@ export class Browser extends Component {
   reached_history_end = false;
   advancing_history = false;
   nsfw = false;
+  userless = false;
   // upvote_DEBUG = false;
   // downvote_DEBUG = false;
 
@@ -375,36 +376,67 @@ export class Browser extends Component {
   }
 
   componentDidMount() {
-    // this.code = new URL(window.location.href).searchParams.get('code');
-    // if (this.code !== null) {
-    //   snoowrap.fromAuthCode({
-    //     code: this.code,
-    //     userAgent: 'Lazy Reddit',
-    //     clientId: this.reddit_credentials.clientId,
-    //     clientSecret: this.reddit_credentials.clientSecret,
-    //     redirectUri: 'http://localhost:3000/browse/'
-    //   })
-    //   .then(r => {
-    //     this.reddit = r;
-
-    //     this.main_loop();
-    //     this.interval = setInterval(this.main_loop, 5000); // HOWEVER, THE BUG IS GONE IF THE TIMER IS BIG ENOUGH TO COVER THE REQUEST
-    //   })
-    // }
-    
-    
-    // for CSS purposes 
-    const r = new snoowrap(this.reddit_credentials);
-    this.reddit = r;
-    this.sort_options = {
-      best: this.reddit.getBest.bind(this.reddit),
-      hot: this.reddit.getHot.bind(this.reddit),
-      new: this.reddit.getNew.bind(this.reddit),
-      top: this.reddit.getTop.bind(this.reddit),
-      rising: this.reddit.getRising.bind(this.reddit),
-    };
-    this.main_loop();
-    this.interval = setInterval(this.main_loop, 10000);
+    if (new URL(window.location.href).searchParams.get('userless') === null) {
+      this.code = new URL(window.location.href).searchParams.get('code');
+      if (this.code !== null) {
+        snoowrap.fromAuthCode({
+          code: this.code,
+          userAgent: 'Lazy Client for Reddit',
+          clientId: this.reddit_credentials.clientId,
+          clientSecret: this.reddit_credentials.clientSecret,
+          redirectUri: 'http://localhost:3000/browse/'
+        })
+        .then(r => {
+          this.reddit = r;
+          this.sort_options = {
+            best: this.reddit.getBest.bind(this.reddit),
+            hot: this.reddit.getHot.bind(this.reddit),
+            new: this.reddit.getNew.bind(this.reddit),
+            top: this.reddit.getTop.bind(this.reddit),
+            rising: this.reddit.getRising.bind(this.reddit),
+          };
+          this.main_loop();
+          this.interval = setInterval(this.main_loop, 10000); // HOWEVER, THE BUG IS GONE IF THE TIMER IS BIG ENOUGH TO COVER THE REQUEST
+        })
+        .catch(error => {
+          if (error.message === 'API Error: invalid_grant - undefined')
+            window.open('/', '_self');
+        });
+      }
+    } else {
+      // console.log('userless mode');
+      // this needs to make a request
+      // const r = new snoowrap(this.reddit_credentials);
+      // this.reddit = r;
+      // this.sort_options = {
+      //   best: this.reddit.getBest.bind(this.reddit),
+      //   hot: this.reddit.getHot.bind(this.reddit),
+      //   new: this.reddit.getNew.bind(this.reddit),
+      //   top: this.reddit.getTop.bind(this.reddit),
+      //   rising: this.reddit.getRising.bind(this.reddit),
+      // };
+      // this.main_loop();
+      // this.interval = setInterval(this.main_loop, 10000);
+      this.userless = true;
+      snoowrap.fromApplicationOnlyAuth({
+        userAgent: 'Lazy Client for Reddit',
+        clientId: this.reddit_credentials.clientId,
+        clientSecret: this.reddit_credentials.clientSecret,
+        grantType: snoowrap.grantType.CLIENT_CREDENTIALS
+      })
+      .then(r => {
+        this.reddit = r;
+        this.sort_options = {
+          best: this.reddit.getBest.bind(this.reddit),
+          hot: this.reddit.getHot.bind(this.reddit),
+          new: this.reddit.getNew.bind(this.reddit),
+          top: this.reddit.getTop.bind(this.reddit),
+          rising: this.reddit.getRising.bind(this.reddit),
+        };
+        this.main_loop();
+        this.interval = setInterval(this.main_loop, 10000);
+      });
+    }
   }
   
   componentWillUnmount() {
@@ -561,7 +593,7 @@ export class Browser extends Component {
     return (
       <div style={{width: '100%', height: '100%', display: 'flex'}}>
           <div style={mainStyle}>
-            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)} upvote_pressed={this.state.upvote_pressed} downvote_pressed={this.state.downvote_pressed} play_pause={this.play_pause.bind(this)} paused={this.state.paused} return_last={this.return_last.bind(this)} skip={this.skip.bind(this)} skip_batch={this.skip_batch.bind(this)} batch={this.batch}/>
+            <ContentFrame local_post_id={this.state.local_post_id} submission={this.submission} downvote={this.downvote.bind(this)} upvote={this.upvote.bind(this)} upvote_pressed={this.state.upvote_pressed} downvote_pressed={this.state.downvote_pressed} play_pause={this.play_pause.bind(this)} paused={this.state.paused} return_last={this.return_last.bind(this)} skip={this.skip.bind(this)} skip_batch={this.skip_batch.bind(this)} batch={this.batch} userless={this.userless}/>
           </div>
           <div style={offStyle}>
             <RightPanel local_post_id={this.state.local_post_id} comments={this.comments} sort_by={this.sort_by.bind(this)} jump_to={this.jump_to.bind(this)} change_nsfw={this.change_nsfw.bind(this)}/>

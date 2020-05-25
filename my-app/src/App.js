@@ -113,15 +113,25 @@ class App extends Component {
                   <span id='upper-header' style={upperHeaderStyle}>Lazy Client</span>
                   {/* <span>Lazy Client</span> */}
                   <span id='lower-header' style={lowerHeaderStyle}>for Reddit</span>
-                  <span id='text' style={textStyle}>Too lazy to scroll through your posts? Say no more!</span>
+                  <span id='text' style={textStyle}>Too lazy to scroll through your posts yourself? Say no more!</span>
                   <div id='button-box' style={buttonBox}>
                     <a
-                        className="login-button"
-                        href={this.state.auth_url}
-                        target="_self"
-                        // rel="noopener noreferrer"
-                      >
-                        Login via Reddit
+                      className="login-button"
+                      href={this.state.auth_url}
+                      target="_self"
+                      // rel="noopener noreferrer"
+                    >
+                      Login via Reddit
+                    </a>
+
+                    <a
+                      style={{marginTop: '20px'}}
+                      className="login-button2"
+                      href='/browse?userless=true'
+                      target="_self"
+                      // rel="noopener noreferrer"
+                    >
+                      Proceed without login
                     </a>
                   </div>
                 </div>
@@ -139,7 +149,7 @@ const loginBox = {
   minWidth: '300px',
   backgroundColor: 'white',
   height: '30%',
-  minHeight: '250px',
+  minHeight: '325px',
   borderStyle: 'solid',
   border: '1px white',
   borderRadius: '10px',
@@ -155,13 +165,15 @@ const loginBox = {
 };
 
 const buttonBox = {
+  marginTop: '20px',
   width: '100%',
   // height: '80%',
-  height: '45%',
+  height: '50%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   // color: 'black',
+  flexDirection: 'column',
 };
 
 const upperHeaderStyle = {

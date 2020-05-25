@@ -17,29 +17,49 @@ export class ContentControls extends Component {
     return `Skip ${this.props.batch} posts`;
   }
   
+  check_userless = () => {
+    if (this.props.userless) {
+      return (
+        <>
+          <React.Fragment key={this.props.submission.id}>
+            <span id='score' style={scoreStyle} className='fade-animation-fast'>
+              {this.props.submission.score}
+            </span>
+          </React.Fragment>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <span id='upvote' style={upvoteStyle} onClick={this.props.upvote} className='upvote'>
+            <a href="#a" title='Upvote' style={aStyle}>
+              <img src={this.props.upvote_pressed ? arrow_up_orange : arrow_up_grey} alt='upvote' style={svgStyle}/>
+            </a>
+          </span>
+
+          <hr style={vertLineStyle}/>
+          <React.Fragment key={this.props.submission.id}>
+            <span id='score' style={scoreStyle} className='fade-animation-fast'>
+              {this.props.submission.score}
+            </span>
+          </React.Fragment>
+
+          <hr style={vertLineStyle}/>
+          <span id='downvote' style={downvoteStyle} onClick={this.props.downvote} className='downvote'>
+            <a href="#a" title='Downvote' style={aStyle}>
+              <img src={this.props.downvote_pressed ? arrow_down_blue : arrow_down_grey} alt='upvote' style={svgStyle}/>
+            </a>
+          </span>
+        </>
+      )
+    }
+  }
+
   render() {
     return (
       <div style={contentControlsStyle}>
 
-        <span id='upvote' style={upvoteStyle} onClick={this.props.upvote} className='upvote'>
-          <a href="#a" title='Upvote' style={aStyle}>
-            <img src={this.props.upvote_pressed ? arrow_up_orange : arrow_up_grey} alt='upvote' style={svgStyle}/>
-          </a>
-        </span>
-
-        <hr style={vertLineStyle}/>
-        <React.Fragment key={this.props.submission.id}>
-          <span id='score' style={scoreStyle} className='fade-animation-fast'>
-            {this.props.submission.score}
-          </span>
-        </React.Fragment>
-
-        <hr style={vertLineStyle}/>
-        <span id='downvote' style={downvoteStyle} onClick={this.props.downvote} className='downvote'>
-          <a href="#a" title='Downvote' style={aStyle}>
-            <img src={this.props.downvote_pressed ? arrow_down_blue : arrow_down_grey} alt='upvote' style={svgStyle}/>
-          </a>
-        </span>
+        {this.check_userless()}
 
         <hr style={vertLineStyle}/>
         <span id='play_pause' style={playPauseStyle} onClick={this.props.play_pause} className='play-pause'>
