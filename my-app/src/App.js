@@ -32,7 +32,7 @@ class App extends Component {
         clientSecret: process.env.REACT_APP_CLIENT_SECRET,        // client secret
         // scope: ['identity', 'mysubreddits', 'read', 'report', 'submit', 'vote', 'subscribe'],
         scope: ['mysubreddits', 'read', 'vote'],
-        redirectUri: 'http://localhost:3000/browse/',
+        redirectUri: process.env.REACT_APP_REDIRECT_URI,
         permanent: true,
         state: state,
       });
@@ -73,7 +73,7 @@ class App extends Component {
     return (
         <Router>
           <Switch>
-            <Route path='/browse'>
+            <Route path='/browse/'>
               <div id='browse' style={this.globalStyle()}>
                 <Browser/>
               </div>
@@ -104,7 +104,7 @@ class App extends Component {
                         <a
                           style={{marginTop: '20px'}}
                           className="login-button2"
-                          href='/browse?userless=true'
+                          href='/browse/?userless=true'
                           target="_self"
                           // rel="noopener noreferrer"
                         >

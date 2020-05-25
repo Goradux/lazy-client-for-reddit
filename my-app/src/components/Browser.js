@@ -387,7 +387,7 @@ export class Browser extends Component {
           userAgent: 'Lazy Client for Reddit',
           clientId: this.reddit_credentials.clientId,
           clientSecret: this.reddit_credentials.clientSecret,
-          redirectUri: 'http://localhost:3000/browse/'
+          redirectUri: process.env.REACT_APP_REDIRECT_URI
         })
         .then(r => {
           this.reddit = r;
