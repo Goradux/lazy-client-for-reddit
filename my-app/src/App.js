@@ -13,13 +13,6 @@ import {
 } from 'react-router-dom';
 
 class App extends Component {
-
-  reddit_credentials = {
-    userAgent: 'Lazy Reddit',
-    clientId: "YeMQjOy7Vc-TTw",                           // app ID
-    clientSecret: 'SkO9R2trQzwQp2mOs-VXo7K0BpE',
-    refreshToken: '59264954-4ZEIHuZY9N6p-70okhuxJqSyads'
-  }
   code = null;
 
   state = {
@@ -34,8 +27,8 @@ class App extends Component {
     const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     if (this.code === null) {
       const auth_url = snoowrap.getAuthUrl({
-        clientId: "YeMQjOy7Vc-TTw",                     // client ID
-        clientSecret: 'SkO9R2trQzwQp2mOs-VXo7K0BpE',        // client secret
+        clientId: process.env.REACT_APP_CLIENT_ID,                // client ID
+        clientSecret: process.env.REACT_APP_CLIENT_SECRET,        // client secret
         scope: ['identity', 'mysubreddits', 'read', 'report', 'submit', 'vote', 'subscribe'],
         redirectUri: 'http://localhost:3000/browse/',
         permanent: true,

@@ -5,8 +5,8 @@ import RightPanel from './layout/RightPanel';
 
 export class Browser extends Component {
 
-  // sort_options = ['best', 'hot', 'new', 'top', 'rising'];
   batch = 100;
+  // sort_options: 'best', 'hot', 'new', 'top', 'rising'
   sort_options = {};
   current_sort = 'hot';
   after = 0;
@@ -19,10 +19,10 @@ export class Browser extends Component {
   clicked_return = false;
   comments = [];
   reddit_credentials = {
-    userAgent: 'Lazy Reddit',
-    clientId: "YeMQjOy7Vc-TTw",                           // app ID
-    clientSecret: 'SkO9R2trQzwQp2mOs-VXo7K0BpE',
-    refreshToken: '59264954-4ZEIHuZY9N6p-70okhuxJqSyads'
+    userAgent: 'Lazy Client for Reddit',
+    clientId: process.env.REACT_APP_CLIENT_ID,
+    clientSecret: process.env.REACT_APP_CLIENT_SECRET,
+    refreshToken: process.env.REACT_APP_REFRESH_TOKEN,
   }
   reddit = null;
   _first = true;
@@ -377,6 +377,9 @@ export class Browser extends Component {
 
   componentDidMount() {
     if (new URL(window.location.href).searchParams.get('userless') === null) {
+      if (new URL(window.location.href).searchParams.get('error') === 'access_denied') {
+        window.open('/', '_self');
+      }
       this.code = new URL(window.location.href).searchParams.get('code');
       if (this.code !== null) {
         snoowrap.fromAuthCode({
@@ -404,19 +407,6 @@ export class Browser extends Component {
         });
       }
     } else {
-      // console.log('userless mode');
-      // this needs to make a request
-      // const r = new snoowrap(this.reddit_credentials);
-      // this.reddit = r;
-      // this.sort_options = {
-      //   best: this.reddit.getBest.bind(this.reddit),
-      //   hot: this.reddit.getHot.bind(this.reddit),
-      //   new: this.reddit.getNew.bind(this.reddit),
-      //   top: this.reddit.getTop.bind(this.reddit),
-      //   rising: this.reddit.getRising.bind(this.reddit),
-      // };
-      // this.main_loop();
-      // this.interval = setInterval(this.main_loop, 10000);
       this.userless = true;
       snoowrap.fromApplicationOnlyAuth({
         userAgent: 'Lazy Client for Reddit',

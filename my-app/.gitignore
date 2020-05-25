@@ -25,3 +25,5 @@ yarn-error.log*
 
 # SVG samples
 /svgs
+
+secrets.txt
